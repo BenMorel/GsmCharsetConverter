@@ -218,14 +218,14 @@ class ConverterTest extends TestCase
      * @param string|null $replaceChars    The optional replacement string for unknown chars.
      * @param string      $expectedMessage The expected exception message.
      */
-    public function testConvertUtf8ToUtf8WithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage) : void
+    public function testCleanUpUtf8StringWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage) : void
     {
         $converter = new Converter();
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedMessage);
 
-        $converter->convertUtf8ToUtf8($string, $translit, $replaceChars);
+        $converter->cleanUpUtf8String($string, $translit, $replaceChars);
     }
 
     public function providerConvertUtf8ToGsmWithInvalidParams() : array
@@ -247,20 +247,20 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerConvertUtf8ToUtf8
+     * @dataProvider providerCleanUpUtf8String
      *
      * @param string      $input           The UTF-8 input string.
      * @param bool        $translit        Whether to use transliteration.
      * @param string|null $replaceChars    The optional replacement string for unknown chars.
      * @param string      $output          The expected UTF-8 output string.
      */
-    public function testConvertUtf8ToUtf8(string $input, bool $translit, ?string $replaceChars, string $output) : void
+    public function testCleanUpUtf8String(string $input, bool $translit, ?string $replaceChars, string $output) : void
     {
         $converter = new Converter();
-        self::assertSame($output, $converter->convertUtf8ToUtf8($input, $translit, $replaceChars));
+        self::assertSame($output, $converter->cleanUpUtf8String($input, $translit, $replaceChars));
     }
 
-    public function providerConvertUtf8ToUtf8() : iterable
+    public function providerCleanUpUtf8String() : iterable
     {
         // Fully GSM 03.38 compatible string tests;
         // Let's tests these with all parameter combinations, the output should always be the same as the input.

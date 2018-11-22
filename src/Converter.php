@@ -151,7 +151,7 @@ class Converter
     }
 
     /**
-     * Converts the given UTF-8 string to a UTF-8 string containing only chars compatible with the GSM 03.38 charset.
+     * Cleans up the given UTF-8 string, to make it contain only chars compatible with the GSM 03.38 charset.
      *
      * This is useful if your SMS gateway accepts UTF-8, but provides no way to force the GSM charset, and you want to
      * avoid the extra charge of getting your SMS sent as UCS-2 and split into several parts.
@@ -172,7 +172,7 @@ class Converter
      *
      * @throws \InvalidArgumentException If an error occurs.
      */
-    public function convertUtf8ToUtf8(string $string, bool $translit, ?string $replaceChars = null) : string
+    public function cleanUpUtf8String(string $string, bool $translit, ?string $replaceChars = null) : string
     {
         return $this->convertGsmToUtf8(
             $this->convertUtf8ToGsm($string, $translit, $replaceChars)
