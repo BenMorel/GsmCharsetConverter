@@ -243,6 +243,9 @@ class ConverterTest extends TestCase
             // Input string requiring replacement
             ['汉字', false, null, 'UTF-8 character E6B189 cannot be converted'],
             ['汉字', true, null, 'UTF-8 character E6B189 cannot be converted'],
+
+            // Invalid replacement string
+            ['', false, "ç", 'Replacement string must contain only GSM 03.38 compatible chars'],
         ];
     }
 
