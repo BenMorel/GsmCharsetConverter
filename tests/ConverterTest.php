@@ -81,6 +81,8 @@ class ConverterTest extends TestCase
             ["\x1B\x27", 'char 1B27 is unknown'],
             ["\x1B\x2A", 'char 1B2A is unknown'],
             ["\x1B\xFF", 'char 1BFF is unknown'],
+            ["\x80", 'char 80 is unknown'],
+            ["\xFF", 'char FF is unknown'],
         ];
     }
 
