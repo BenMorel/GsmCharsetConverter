@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace BenMorel\GsmCharsetConverter;
 
 /**
@@ -8,7 +10,7 @@ namespace BenMorel\GsmCharsetConverter;
 class Charset
 {
     /**
-     * Maps the whole GSM 03.38 charset to UTF-8.
+     * Maps the GSM 03.38 default alphabet and extension table to UTF-8.
      *
      * These mappings have been checked manually for consistency against the following sources:
      *
@@ -153,7 +155,9 @@ class Charset
         // Extension table
 
         "\x1B\x0A" => "\u{000C}", // FORM FEED
+        // 1B0D = CR2 is a control char, not implemented here
         "\x1B\x14" => "\u{005E}", // CIRCUMFLEX ACCENT
+        // 1B1B = SS2 is a control char reserved for future extensions, not implemented here
         "\x1B\x28" => "\u{007B}", // LEFT CURLY BRACKET
         "\x1B\x29" => "\u{007D}", // RIGHT CURLY BRACKET
         "\x1B\x2F" => "\u{005C}", // REVERSE SOLIDUS
