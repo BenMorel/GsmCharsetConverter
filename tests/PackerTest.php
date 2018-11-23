@@ -80,4 +80,22 @@ class PackerTest extends TestCase
         $packer = new Packer();
         $packer->pack("\xAA");
     }
+
+    /**
+     * Re-uses the pack data provider.
+     *
+     * @dataProvider providerPack
+     *
+     * @param string $output   The expected 7-bit output string.
+     * @param string $inputHex The input string, hex-encoded.
+     */
+    public function testUnpack(string $output, string $inputHex) : void
+    {
+        $packer = new Packer();
+        $actualOutput = $packer->unpack(hex2bin($inputHex));
+
+        $message = bin2hex($actualOutput) . " != " . bin2hex($output);
+
+        self::assertSame($output, $actualOutput, $message);
+    }
 }
