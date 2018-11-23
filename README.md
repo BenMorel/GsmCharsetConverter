@@ -42,7 +42,7 @@ $utf8 = $converter->convertGsmToUtf8('...');
 ```
 
 The input string must be a valid GSM 03.38 string, or an `InvalidArgumentException` is thrown.
-**The input string is expected to be unpacked**: 7-bit chars in 8-bit bytes with a leading zero bit.
+**The input string is expected to be unpacked**: 7-bit chars in 8-bit bytes with a leading zero bit, just like ASCII chars.
 
 ### Converting UTF-8 strings to GSM 03.38
 
