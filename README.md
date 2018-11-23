@@ -15,7 +15,6 @@ Known limitations:
 
 - Only the default alphabet and extension table are supported at the moment; this is the alphabet that must be supported by every device and network element according to the standard. [Other alphabets exist](https://en.wikipedia.org/wiki/GSM_03.38#National_language_shift_tables) but this project does not currently aim to support them.
 - Transliteration is only available for the latin1 alphabet; it may not make sense to provide much more transliteration anyway, as the likelihood to find a close variant of a non-latin1 character in the GSM charset is quite small. If you feel like another UTF-8 character could be transliterated, please [open an issue](https://github.com/BenMorel/GsmCharsetConverter/issues)!
-- This library currently only deals with unpacked characters, i.e. 7-bit characters in an 8-bit byte, with a leading zero bit. To fit 160 characters in a 140 bytes SMS, the characters have to be packed into a binary string. This project does not currently provide this functionality.
 
 ## Installation
 
@@ -87,3 +86,19 @@ This method accepts the same parameters as `convertUtf8ToGsm()`:
 $utf8 = $converter->cleanUpUtf8String('Helló', false, '?'); // Hell?
 $utf8 = $converter->cleanUpUtf8String('Helló', true, '?'); // Hello
 ```
+
+### Packing 7-bit strings into 8-bit binary strings
+
+To fit 160 7-bit characters into a 140 bytes SMS, the characters have to be packed into a binary, 8-bit string.
+The `Packer` class provides functionality to pack and unpack strings in this format:
+
+```php
+use BenMorel\GsmCharsetConverter\Packer;
+
+$packer = new Packer();
+$packed = $packer->pack('ABC'); // the binary string 41E110
+$string = $packer->unpack("\x41\xE1\x10"); // ABC
+```
+
+Note that `pack()` throws an `InvalidArgumentException` if the input string contains 8-bit chars (i.e. chars with the leading bit set).
+
