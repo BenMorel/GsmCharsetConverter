@@ -58,6 +58,12 @@ class Packer
     /**
      * Unpacks an 8-bit string into a 7-bit string.
      *
+     * Note: unpacking can be ambiguous when the length of the input string is a multiple of 7, and the last septet
+     * is zero (i.e. when the last octet is 0x00 or 0x01). For example, both 0x7F7F7F7F7F7F7F and 0x7F7F7F7F7F7F7F00
+     * pack to 0xFFFFFFFFFFFF01, so without context, we cannot know while unpacking if there is a trailing zero septet,
+     * or if the zeros are just padding. This method always resolves to dropping the last zero in this special case:
+     * 0xFFFFFFFFFFFF01 will unpack to F7F7F7F7F7F7F.
+     *
      * @param string $string
      *
      * @return string

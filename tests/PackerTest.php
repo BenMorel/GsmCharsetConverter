@@ -98,4 +98,34 @@ class PackerTest extends TestCase
 
         self::assertSame($output, $actualOutput, $message);
     }
+
+    /**
+     * This test showcases the ambiguity described in Packer::unpack() in some edge cases,
+     * and tests that unpack() consistently resolves this ambiguity to dropping the last zero septet.
+     *
+     * @dataProvider providedAmbiguousUnpack
+     *
+     * @param string $string An unpacked 7-bit string.
+     * @param string $packed The packed 8-bit string, with a length multiple of 8 and ending with 0x00 or 0x01.
+     */
+    public function testAmbiguousUnpack(string $string, string $packed) : void
+    {
+        $packer = new Packer();
+
+        $stringWithTrailingZero = $string . "\x00";
+
+        self::assertSame($packed, $packer->pack($string));
+        self::assertSame($packed, $packer->pack($stringWithTrailingZero));
+        self::assertSame($string, $packer->unpack($packed));
+    }
+
+    public function providedAmbiguousUnpack() : array
+    {
+        return [
+            ["\x7F\x7F\x7F\x7F\x7F\x7F\x3F", "\xFF\xFF\xFF\xFF\xFF\xFF\x00"],
+            ["\x7F\x7F\x7F\x7F\x7F\x7F\x7F", "\xFF\xFF\xFF\xFF\xFF\xFF\x01"],
+            ["\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x3F", "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x00"],
+            ["\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F\x7F", "\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF\x01"],
+        ];
+    }
 }
