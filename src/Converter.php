@@ -26,7 +26,7 @@ class Converter
     {
         // Flip the GSM to UTF-8 dictionary to create the UTF-8 to GSM dictionary;
         // Convert all values to strings as the array keys for digits are converted to int by PHP.
-        $this->utf8ToGsm = array_map(function($value) {
+        $this->utf8ToGsm = array_map(static function($value) {
             return (string) $value;
         }, array_flip(Charset::GSM_TO_UTF8));
 
