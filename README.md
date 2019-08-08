@@ -14,7 +14,7 @@ The library offers optional transliteration: unsupported characters can be repla
 Known limitations:
 
 - Only the default alphabet and extension table are supported at the moment; this is the alphabet that must be supported by every device and network element according to the standard. [Other alphabets exist](https://en.wikipedia.org/wiki/GSM_03.38#National_language_shift_tables) but this project does not currently aim to support them.
-- Transliteration is only available for the latin1 alphabet; it may not make sense to provide much more transliteration anyway, as the likelihood to find a close variant of a non-latin1 character in the GSM charset is quite small. If you feel like another UTF-8 character could be transliterated, please [open an issue](https://github.com/BenMorel/GsmCharsetConverter/issues)!
+- Transliteration may not be available for all characters that could have a close equivalent in the GSM charset; this library supports transliteration of LATIN1 chars, as well as Polish chars. If you feel like another UTF-8 character could be transliterated, please [open an issue](https://github.com/BenMorel/GsmCharsetConverter/issues)!
 
 ## Installation
 
