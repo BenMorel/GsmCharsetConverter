@@ -170,12 +170,12 @@ class Charset
 
     /**
      * Maps UTF-8 chars that are not present in the GSM charset to a close match in one or more GSM charset-compatible
-     * UTF-8 chars. Currently, only characters in the Unicode range 0000 - 00FF (latin1) are transliterated.
-     *
-     * This list is hand-crafted and aims to cover the full latin1 range. Mappings marked with (*) are very
-     * rough approximations that could be candidate for removal if full latin1 range is not a requirement anymore.
+     * UTF-8 chars.
      */
     public const TRANSLITERATE = [
+        // Characters in the Unicode range 0000 - 00FF (latin1).
+        // This list is hand-crafted and aims to cover the full latin1 range. Mappings marked with (*) are very
+        // rough approximations that could be candidate for removal if full latin1 range is not a requirement anymore.
         "\u{0060}" => "\u{0027}", // GRAVE ACCENT => APOSTROPHE
         "\u{00A0}" => "\u{0020}", // NO-BREAK SPACE => SPACE
         "\u{00A2}" => "\u{0063}", // CENT SIGN => LATIN SMALL LETTER C
@@ -243,6 +243,25 @@ class Charset
         "\u{00FB}" => "\u{0075}", // LATIN SMALL LETTER U WITH CIRCUMFLEX => LATIN SMALL LETTER U
         "\u{00FD}" => "\u{0079}", // LATIN SMALL LETTER Y WITH ACUTE => LATIN SMALL LETTER Y
         "\u{00FE}" => "th",       // LATIN SMALL LETTER THORN
-        "\u{00FF}" => "\u{0079}", // LATIN SMALL LETTER Y WITH DIAERESIS => LATIN SMALL LETTER Y
+        "\u{00FF}" => "\u{0079}", // LATIN SMALL LETTER Y WITH DIAERESIS => LATIN SMALL LETTER Y,
+
+        // Polish chars.
+        // See: https://github.com/BenMorel/GsmCharsetConverter/issues/1
+        "\u{0105}" => "\u{0061}",
+        "\u{0104}" => "\u{0041}",
+        "\u{0107}" => "\u{0063}",
+        "\u{0106}" => "\u{0043}",
+        "\u{0119}" => "\u{0065}",
+        "\u{0118}" => "\u{0045}",
+        "\u{0142}" => "\u{006C}",
+        "\u{0141}" => "\u{004C}",
+        "\u{0144}" => "\u{006E}",
+        "\u{0143}" => "\u{004E}",
+        "\u{015b}" => "\u{0073}",
+        "\u{015a}" => "\u{0053}",
+        "\u{017a}" => "\u{007A}",
+        "\u{0179}" => "\u{005A}",
+        "\u{017c}" => "\u{007A}",
+        "\u{017b}" => "\u{005A}",
     ];
 }

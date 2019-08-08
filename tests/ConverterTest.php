@@ -325,6 +325,8 @@ class ConverterTest extends TestCase
             ["ïðóôõ", "idooo"],
             ["÷úûýÿ", "/uuyy"],
 
+            ["ąĄćĆęĘłŁńŃśŚźŹżŻ", "aAcCeElLnNsSzZzZ"],
+
             // full table to multiple chars
             ["©®±¼", '(c)(r)+/-1/4'],
             ["½¾Þþ", '1/23/4THth'],
