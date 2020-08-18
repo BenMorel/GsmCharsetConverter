@@ -32,7 +32,7 @@ This library requires PHP >= 7.1, and the `mbstring` extension.
 
 ### Converting GSM 03.38 strings to UTF-8
 
-The `convertGsmToUtf8()` method takes no parameters:
+The `convertGsmToUtf8()` method takes one parameter:
 
 ```php
 use BenMorel\GsmCharsetConverter\Converter;
