@@ -3,7 +3,7 @@
 A PHP library to convert GSM 03.38, the charset used for SMS messaging, to and from UTF-8.
 
 [![Build Status](https://secure.travis-ci.org/BenMorel/GsmCharsetConverter.svg?branch=master)](http://travis-ci.org/BenMorel/GsmCharsetConverter)
-[![Coverage Status](https://coveralls.io/repos/BenMorel/GsmCharsetConverter/badge.svg?branch=master)](https://coveralls.io/r/BenMorel/GsmCharsetConverter?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/BenMorel/GsmCharsetConverter/badge.svg?branch=master)](https://coveralls.io/github/BenMorel/GsmCharsetConverter?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/benmorel/gsm-charset-converter/v/stable)](https://packagist.org/packages/benmorel/gsm-charset-converter)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
