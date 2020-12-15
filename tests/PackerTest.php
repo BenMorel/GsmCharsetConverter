@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BenMorel\GsmCharsetConverter\Tests;
 
 use BenMorel\GsmCharsetConverter\Packer;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class PackerTest extends TestCase
@@ -72,12 +73,11 @@ class PackerTest extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testPack8bitData() : void
     {
         $packer = new Packer();
+
+        $this->expectException(InvalidArgumentException::class);
         $packer->pack("\xAA");
     }
 
