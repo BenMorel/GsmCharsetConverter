@@ -245,7 +245,6 @@ class Charset
         "\u{00FE}" => "th",       // LATIN SMALL LETTER THORN
         "\u{00FF}" => "\u{0079}", // LATIN SMALL LETTER Y WITH DIAERESIS => LATIN SMALL LETTER Y
 
-
         "\u{FEFF}" => "",         // ZERO WIDTH NO-BREAK SPACE
         "\u{2019}" => "\u{0027}", // RIGHT SINGLE QUOTATION MARK => APOSTROPHE
         "\u{02BC}" => "\u{0027}", // MODIFIER LETTER APOSTROPHE => APOSTROPHE
@@ -254,7 +253,7 @@ class Charset
         // French chars.
         "\u{0152}" => "OE",       // LATIN CAPITAL LIGATURE OE
         "\u{0153}" => "oe",       // LATIN SMALL LIGATURE OE
-        "\u{0178}" => "\u{0079}", // LATIN CAPITAL LETTER Y WITH DIAERESIS => LATIN SMALL LETTER Y
+        "\u{0178}" => "\u{0059}", // LATIN CAPITAL LETTER Y WITH DIAERESIS => LATIN CAPITAL LETTER Y
 
         // Polish chars.
         // See: https://github.com/BenMorel/GsmCharsetConverter/issues/1
