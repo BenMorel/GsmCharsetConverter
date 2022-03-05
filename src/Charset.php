@@ -282,29 +282,28 @@ class Charset
         "\u{021B}" => "\u{0074}", // ț => t
         "\u{0102}" => "\u{0041}", // Ă => A
         "\u{0103}" => "\u{0061}", // ă => a
-        
-        
-        //Greek chars.
-        "\u{0391}" => "\u{0041}", //GREEK CAPITAL LETTER ALPHA (A)
-        "\u{0386}" => "\u{0041}", //GREEK CAPITAL LETTER ALPHA TONOS Ά
-        "\u{0392}" => "\u{0042}", //GREEK CAPITAL LETTER BETTA (Β)
-        "\u{0395}" => "\u{0045}", //GREEK CAPITAL LETTER EPSILON TONOS (Ε)
-        "\u{0388}" => "\u{0045}", //GREEK CAPITAL LETTER EPSILON TONOS (Έ)
-        "\u{0396}" => "\u{005A}",//GREEK CAPITAL LETTER ZITA (Z)
-        "\u{0397}" => "\u{0048}",//GREEK CAPITAL LETTER ITA (Η)
-        "\u{0389}" => "\u{0048}",//GREEK CAPITAL LETTER ITA TONOS (Ή)
-        "\u{0399}" => "\u{0049}",//GREEK CAPITAL LETTER YIOTA (Ι)
-        "\u{038A}" => "\u{0049}",//GREEK CAPITAL LETTER YIOTA TONOS (Ί)
-        "\u{039A}" => "\u{004B}",//GREEK CAPITAL LETTER KAPPA (Κ)
-        "\u{039C}" => "\u{004D}",//GREEK CAPITAL LETTER MI (Μ)
-        "\u{039D}" => "\u{004E}",//GREEK CAPITAL LETTER NI (Ν)
-        "\u{039F}" => "\u{004F}",//GREEK CAPITAL LETTER OMIKRON (Ο)
-        "\u{038C}" => "\u{004F}",//GREEK CAPITAL LETTER OMIKRON TONOS (Ό)
-        "\u{03A1}" => "\u{0050}",//GREEK CAPITAL LETTER RO (Ρ)
-        "\u{03A4}" => "\u{0054}",//GREEK CAPITAL LETTER TAF (Τ)
-        "\u{03A5}" => "\u{0059}",//GREEK CAPITAL LETTER IPSILON (Υ)
-        "\u{038E}" => "\u{0059}",//GREEK CAPITAL LETTER IPSILON TONOS (Ϋ)
-        "\u{03A7}" => "\u{0058}",//GREEK CAPITAL LETTER CHI (Χ)
+
+        // Greek chars.
+        "\u{0391}" => "\u{0041}", // GREEK CAPITAL LETTER ALPHA (A)
+        "\u{0386}" => "\u{0041}", // GREEK CAPITAL LETTER ALPHA TONOS Ά
+        "\u{0392}" => "\u{0042}", // GREEK CAPITAL LETTER BETTA (Β)
+        "\u{0395}" => "\u{0045}", // GREEK CAPITAL LETTER EPSILON TONOS (Ε)
+        "\u{0388}" => "\u{0045}", // GREEK CAPITAL LETTER EPSILON TONOS (Έ)
+        "\u{0396}" => "\u{005A}", // GREEK CAPITAL LETTER ZITA (Z)
+        "\u{0397}" => "\u{0048}", // GREEK CAPITAL LETTER ITA (Η)
+        "\u{0389}" => "\u{0048}", // GREEK CAPITAL LETTER ITA TONOS (Ή)
+        "\u{0399}" => "\u{0049}", // GREEK CAPITAL LETTER YIOTA (Ι)
+        "\u{038A}" => "\u{0049}", // GREEK CAPITAL LETTER YIOTA TONOS (Ί)
+        "\u{039A}" => "\u{004B}", // GREEK CAPITAL LETTER KAPPA (Κ)
+        "\u{039C}" => "\u{004D}", // GREEK CAPITAL LETTER MI (Μ)
+        "\u{039D}" => "\u{004E}", // GREEK CAPITAL LETTER NI (Ν)
+        "\u{039F}" => "\u{004F}", // GREEK CAPITAL LETTER OMIKRON (Ο)
+        "\u{038C}" => "\u{004F}", // GREEK CAPITAL LETTER OMIKRON TONOS (Ό)
+        "\u{03A1}" => "\u{0050}", // GREEK CAPITAL LETTER RO (Ρ)
+        "\u{03A4}" => "\u{0054}", // GREEK CAPITAL LETTER TAF (Τ)
+        "\u{03A5}" => "\u{0059}", // GREEK CAPITAL LETTER IPSILON (Υ)
+        "\u{038E}" => "\u{0059}", // GREEK CAPITAL LETTER IPSILON TONOS (Ϋ)
+        "\u{03A7}" => "\u{0058}", // GREEK CAPITAL LETTER CHI (Χ)
         "\u{038F}" => "\u{03A9}", // GREEK CAPITAL LETTER OMEGA TONOS (Ώ)
     ];
 }
