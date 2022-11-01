@@ -52,8 +52,6 @@ final class Converter
      * @param string $string The GSM charset string to convert. If the string is not a valid GSM charset string,
      *                       an exception is thrown.
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If an error occurs.
      */
     public function convertGsmToUtf8(string $string) : string
@@ -104,8 +102,6 @@ final class Converter
      *                                  contain characters compatible with the GSM charset, or an exception is thrown.
      *                                  If this parameter is omitted or null, and the string to convert contains any
      *                                  character that cannot be replaced, an exception is thrown.
-     *
-     * @return string
      *
      * @throws \InvalidArgumentException If an error occurs.
      */
@@ -167,8 +163,6 @@ final class Converter
      *                                  If this parameter is omitted or null, and the string to convert contains any
      *                                  character that cannot be replaced, an exception is thrown.
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If an error occurs.
      */
     public function cleanUpUtf8String(string $string, bool $translit, ?string $replaceChars = null) : string
@@ -179,8 +173,6 @@ final class Converter
     }
 
     /**
-     * @param string $string
-     *
      * @return string[]
      *
      * @throws \InvalidArgumentException

@@ -19,10 +19,6 @@ final class Packer
     /**
      * Packs a 7-bit string into an 8-bit string.
      *
-     * @param string $string
-     *
-     * @return string
-     *
      * @throws \InvalidArgumentException
      */
     public function pack(string $string) : string
@@ -70,10 +66,6 @@ final class Packer
      * pack to 0xFFFFFFFFFFFF01, so without context, we cannot know while unpacking if there is a trailing zero septet,
      * or if the zeros are just padding. This method always resolves to dropping the last zero in this special case:
      * 0xFFFFFFFFFFFF01 will unpack to F7F7F7F7F7F7F.
-     *
-     * @param string $string
-     *
-     * @return string
      */
     public function unpack(string $string) : string
     {
