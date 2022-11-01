@@ -29,6 +29,20 @@ composer require benmorel/gsm-charset-converter
 
 This library requires PHP >= 7.4, and the `mbstring` extension.
 
+## Project status & release process
+
+This library is under development.
+
+The current releases are numbered `0.x.y`. When a non-breaking change is introduced (adding new methods, optimizing
+existing code, etc.), `y` is incremented.
+
+**When a breaking change is introduced, a new `0.x` version cycle is always started.**
+
+It is therefore safe to lock your project to a given release cycle, such as `0.3.*`.
+
+If you need to upgrade to a newer release cycle, check the [release history](https://github.com/BenMorel/GsmCharsetConverter/releases)
+for a list of changes introduced by each further `0.x.0` version.
+
 ## Usage
 
 ### Converting GSM 03.38 strings to UTF-8
