@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BenMorel\GsmCharsetConverter;
 
-class Packer
+final class Packer
 {
     /**
      * The masks to keep only the first n bits of a byte, zeroing out the other bits.

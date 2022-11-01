@@ -7,7 +7,7 @@ namespace BenMorel\GsmCharsetConverter;
 /**
  * Converts GSM 03.38 strings to and from UTF-8.
  */
-class Converter
+final class Converter
 {
     private array $utf8ToGsm;
 
