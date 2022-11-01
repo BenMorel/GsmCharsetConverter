@@ -9,8 +9,14 @@ namespace BenMorel\GsmCharsetConverter;
  */
 final class Converter
 {
+    /**
+     * @var array<string, string>
+     */
     private array $utf8ToGsm;
 
+    /**
+     * @var array<string, string>
+     */
     private array $utf8ToGsmWithTranslit;
 
     /**
@@ -175,7 +181,7 @@ final class Converter
     /**
      * @param string $string
      *
-     * @return array
+     * @return string[]
      *
      * @throws \InvalidArgumentException
      */
