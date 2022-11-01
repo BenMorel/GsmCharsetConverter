@@ -9,15 +9,9 @@ namespace BenMorel\GsmCharsetConverter;
  */
 class Converter
 {
-    /**
-     * @var array
-     */
-    private $utf8ToGsm;
+    private array $utf8ToGsm;
 
-    /**
-     * @var array
-     */
-    private $utf8ToGsmWithTranslit;
+    private array $utf8ToGsmWithTranslit;
 
     /**
      * Converter constructor.
