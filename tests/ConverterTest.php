@@ -353,18 +353,18 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsValidGsm
+     * @dataProvider providerIsUtf8StringGsmCompatible
      *
      * @param string    $input           The UTF-8 input string.
      * @param bool      $output          The expected UTF-8 output string.
      */
-    public function testIsValidGsm(string $input, bool $output) : void
+    public function testIsUtf8StringGsmCompatible(string $input, bool $output) : void
     {
         $converter = new Converter();
-        self::assertSame($output, $converter->isValidGsm($input));
+        self::assertSame($output, $converter->isUtf8StringGsmCompatible($input));
     }
 
-    public function providerIsValidGsm() : iterable
+    public function providerIsUtf8StringGsmCompatible() : iterable
     {
         $tests = [
             // empty string
