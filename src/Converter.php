@@ -185,4 +185,24 @@ final class Converter
 
         return preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
     }
+
+    /**
+     * Checks if string contains only GSM valid characters
+     *
+     * @param string $string The UTF-8 string to check. If the string is not valid UTF-8, an exception
+     *                       is thrown.
+     * @return bool
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function isUtf8StringGsmCompatible(string $string) : bool
+    {
+        $chars = $this->splitUtf8String($string);
+        foreach ($chars as $char) {
+            if (! isset($this->utf8ToGsm[$char])) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
