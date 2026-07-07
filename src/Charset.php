@@ -249,6 +249,7 @@ final class Charset
         "\u{2019}" => "\u{0027}", // RIGHT SINGLE QUOTATION MARK => APOSTROPHE
         "\u{02BC}" => "\u{0027}", // MODIFIER LETTER APOSTROPHE => APOSTROPHE
         "\u{275C}" => "\u{0027}", // HEAVY SINGLE COMMA QUOTATION MARK ORNAMENT => APOSTROPHE
+        "\u{2013}" => "\u{002D}", // EN DASH => HYPHEN-MINUS
 
         // French chars.
         "\u{0152}" => "OE",       // LATIN CAPITAL LIGATURE OE
