@@ -181,15 +181,15 @@ final class Charset
         "\u{00A2}" => "\u{0063}", // CENT SIGN => LATIN SMALL LETTER C
         "\u{00A6}" => "\u{007C}", // BROKEN BAR => VERTICAL LINE
         "\u{00A8}" => "\u{0022}", // DIAERESIS => QUOTATION MARK (*)
-        "\u{00A9}" => "(c)"     , // COPYRIGHT SIGN
+        "\u{00A9}" => '(c)',      // COPYRIGHT SIGN
         "\u{00AA}" => "\u{0061}", // FEMININE ORDINAL INDICATOR => LATIN SMALL LETTER A
         "\u{00AB}" => "\u{0022}", // LEFT-POINTING DOUBLE ANGLE QUOTATION MARK => QUOTATION MARK
         "\u{00AC}" => "\u{002D}", // NOT SIGN => HYPHEN-MINUS (*)
         "\u{00AD}" => "\u{002D}", // SOFT HYPHEN => HYPHEN-MINUS
-        "\u{00AE}" => "(r)",      // REGISTERED SIGN
+        "\u{00AE}" => '(r)',      // REGISTERED SIGN
         "\u{00AF}" => "\u{005F}", // MACRON => LOW LINE (*)
         "\u{00B0}" => "\u{006F}", // DEGREE SIGN => LATIN SMALL LETTER O (*)
-        "\u{00B1}" => "+/-",      // PLUS-MINUS SIGN
+        "\u{00B1}" => '+/-',      // PLUS-MINUS SIGN
         "\u{00B2}" => "\u{0032}", // SUPERSCRIPT TWO => DIGIT TWO
         "\u{00B3}" => "\u{0033}", // SUPERSCRIPT THREE => DIGIT THREE
         "\u{00B4}" => "\u{0027}", // ACUTE ACCENT => APOSTROPHE
@@ -200,9 +200,9 @@ final class Charset
         "\u{00B9}" => "\u{0031}", // SUPERSCRIPT ONE => DIGIT ONE
         "\u{00BA}" => "\u{006F}", // MASCULINE ORDINAL INDICATOR => LATIN SMALL LETTER O (*)
         "\u{00BB}" => "\u{0022}", // RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK => QUOTATION MARK
-        "\u{00BC}" => "1/4",      // VULGAR FRACTION ONE QUARTER
-        "\u{00BD}" => "1/2",      // VULGAR FRACTION ONE HALF
-        "\u{00BE}" => "3/4",      // VULGAR FRACTION THREE QUARTERS
+        "\u{00BC}" => '1/4',      // VULGAR FRACTION ONE QUARTER
+        "\u{00BD}" => '1/2',      // VULGAR FRACTION ONE HALF
+        "\u{00BE}" => '3/4',      // VULGAR FRACTION THREE QUARTERS
         "\u{00C0}" => "\u{0041}", // LATIN CAPITAL LETTER A WITH GRAVE => LATIN CAPITAL LETTER A
         "\u{00C1}" => "\u{0041}", // LATIN CAPITAL LETTER A WITH ACUTE => LATIN CAPITAL LETTER A
         "\u{00C2}" => "\u{0041}", // LATIN CAPITAL LETTER A WITH CIRCUMFLEX => LATIN CAPITAL LETTER A
@@ -224,7 +224,7 @@ final class Charset
         "\u{00DA}" => "\u{0055}", // LATIN CAPITAL LETTER U WITH ACUTE => LATIN CAPITAL LETTER U
         "\u{00DB}" => "\u{0055}", // LATIN CAPITAL LETTER U WITH CIRCUMFLEX => LATIN CAPITAL LETTER U
         "\u{00DD}" => "\u{0059}", // LATIN CAPITAL LETTER Y WITH ACUTE => LATIN CAPITAL LETTER Y
-        "\u{00DE}" => "TH",       // LATIN CAPITAL LETTER THORN
+        "\u{00DE}" => 'TH',       // LATIN CAPITAL LETTER THORN
         "\u{00E1}" => "\u{0061}", // LATIN SMALL LETTER A WITH ACUTE => LATIN SMALL LETTER A
         "\u{00E2}" => "\u{0061}", // LATIN SMALL LETTER A WITH CIRCUMFLEX => LATIN SMALL LETTER A
         "\u{00E3}" => "\u{0061}", // LATIN SMALL LETTER A WITH TILDE => LATIN SMALL LETTER A
@@ -242,18 +242,18 @@ final class Charset
         "\u{00FA}" => "\u{0075}", // LATIN SMALL LETTER U WITH ACUTE => LATIN SMALL LETTER U
         "\u{00FB}" => "\u{0075}", // LATIN SMALL LETTER U WITH CIRCUMFLEX => LATIN SMALL LETTER U
         "\u{00FD}" => "\u{0079}", // LATIN SMALL LETTER Y WITH ACUTE => LATIN SMALL LETTER Y
-        "\u{00FE}" => "th",       // LATIN SMALL LETTER THORN
+        "\u{00FE}" => 'th',       // LATIN SMALL LETTER THORN
         "\u{00FF}" => "\u{0079}", // LATIN SMALL LETTER Y WITH DIAERESIS => LATIN SMALL LETTER Y
 
-        "\u{FEFF}" => "",         // ZERO WIDTH NO-BREAK SPACE
+        "\u{FEFF}" => '',         // ZERO WIDTH NO-BREAK SPACE
         "\u{2019}" => "\u{0027}", // RIGHT SINGLE QUOTATION MARK => APOSTROPHE
         "\u{02BC}" => "\u{0027}", // MODIFIER LETTER APOSTROPHE => APOSTROPHE
         "\u{275C}" => "\u{0027}", // HEAVY SINGLE COMMA QUOTATION MARK ORNAMENT => APOSTROPHE
         "\u{2013}" => "\u{002D}", // EN DASH => HYPHEN-MINUS
 
         // French chars.
-        "\u{0152}" => "OE",       // LATIN CAPITAL LIGATURE OE
-        "\u{0153}" => "oe",       // LATIN SMALL LIGATURE OE
+        "\u{0152}" => 'OE',       // LATIN CAPITAL LIGATURE OE
+        "\u{0153}" => 'oe',       // LATIN SMALL LIGATURE OE
         "\u{0178}" => "\u{0059}", // LATIN CAPITAL LETTER Y WITH DIAERESIS => LATIN CAPITAL LETTER Y
 
         // Polish chars.
@@ -346,51 +346,51 @@ final class Charset
         // Currencies still in use are mapped to their ISO 4217 code (or de facto ticker when there is none);
         // signs shared by several currencies in use are mapped to their generic abbreviation.
         // Historical currencies and subunits are mapped to the abbreviation in use at the time.
-        "\u{058F}" => "AMD",      // ARMENIAN DRAM SIGN
-        "\u{060B}" => "AFN",      // AFGHANI SIGN
-        "\u{09F3}" => "BDT",      // BENGALI RUPEE SIGN (taka)
-        "\u{0E3F}" => "THB",      // THAI CURRENCY SYMBOL BAHT
-        "\u{17DB}" => "KHR",      // KHMER CURRENCY SYMBOL RIEL
-        "\u{20A0}" => "ECU",      // EURO-CURRENCY SIGN
-        "\u{20A1}" => "CRC",      // COLON SIGN
-        "\u{20A2}" => "Cr$",      // CRUZEIRO SIGN
-        "\u{20A3}" => "F",        // FRENCH FRANC SIGN
+        "\u{058F}" => 'AMD',      // ARMENIAN DRAM SIGN
+        "\u{060B}" => 'AFN',      // AFGHANI SIGN
+        "\u{09F3}" => 'BDT',      // BENGALI RUPEE SIGN (taka)
+        "\u{0E3F}" => 'THB',      // THAI CURRENCY SYMBOL BAHT
+        "\u{17DB}" => 'KHR',      // KHMER CURRENCY SYMBOL RIEL
+        "\u{20A0}" => 'ECU',      // EURO-CURRENCY SIGN
+        "\u{20A1}" => 'CRC',      // COLON SIGN
+        "\u{20A2}" => 'Cr$',      // CRUZEIRO SIGN
+        "\u{20A3}" => 'F',        // FRENCH FRANC SIGN
         "\u{20A4}" => "\u{00A3}", // LIRA SIGN => POUND SIGN
-        "\u{20A5}" => "m",        // MILL SIGN
-        "\u{20A6}" => "NGN",      // NAIRA SIGN
-        "\u{20A7}" => "Pts",      // PESETA SIGN
-        "\u{20A8}" => "Rs",       // RUPEE SIGN
-        "\u{20A9}" => "KRW",      // WON SIGN
-        "\u{20AA}" => "ILS",      // NEW SHEQEL SIGN
-        "\u{20AB}" => "VND",      // DONG SIGN
+        "\u{20A5}" => 'm',        // MILL SIGN
+        "\u{20A6}" => 'NGN',      // NAIRA SIGN
+        "\u{20A7}" => 'Pts',      // PESETA SIGN
+        "\u{20A8}" => 'Rs',       // RUPEE SIGN
+        "\u{20A9}" => 'KRW',      // WON SIGN
+        "\u{20AA}" => 'ILS',      // NEW SHEQEL SIGN
+        "\u{20AB}" => 'VND',      // DONG SIGN
         // 20AC = EURO SIGN is part of the GSM charset extension table
-        "\u{20AD}" => "LAK",      // KIP SIGN
-        "\u{20AE}" => "MNT",      // TUGRIK SIGN
-        "\u{20AF}" => "Dr",       // DRACHMA SIGN
-        "\u{20B0}" => "Pf",       // GERMAN PENNY SIGN
-        "\u{20B1}" => "PHP",      // PESO SIGN
-        "\u{20B2}" => "PYG",      // GUARANI SIGN
-        "\u{20B3}" => "A",        // AUSTRAL SIGN
-        "\u{20B4}" => "UAH",      // HRYVNIA SIGN
-        "\u{20B5}" => "GHS",      // CEDI SIGN
-        "\u{20B6}" => "lt",       // LIVRE TOURNOIS SIGN
-        "\u{20B7}" => "Sm",       // SPESMILO SIGN
-        "\u{20B8}" => "KZT",      // TENGE SIGN
-        "\u{20B9}" => "INR",      // INDIAN RUPEE SIGN
-        "\u{20BA}" => "TRY",      // TURKISH LIRA SIGN
-        "\u{20BB}" => "Mk",       // NORDIC MARK SIGN
-        "\u{20BC}" => "AZN",      // MANAT SIGN
-        "\u{20BD}" => "RUB",      // RUBLE SIGN
-        "\u{20BE}" => "GEL",      // LARI SIGN
-        "\u{20BF}" => "BTC",      // BITCOIN SIGN
-        "\u{20C0}" => "KGS",      // SOM SIGN
-        "\u{20C1}" => "SAR",      // SAUDI RIYAL SIGN
-        "\u{FDFC}" => "IRR",      // RIAL SIGN
-        "\u{FE69}" => "$",        // SMALL DOLLAR SIGN => DOLLAR SIGN
-        "\u{FF04}" => "$",        // FULLWIDTH DOLLAR SIGN => DOLLAR SIGN
-        "\u{FFE0}" => "c",        // FULLWIDTH CENT SIGN => LATIN SMALL LETTER C
+        "\u{20AD}" => 'LAK',      // KIP SIGN
+        "\u{20AE}" => 'MNT',      // TUGRIK SIGN
+        "\u{20AF}" => 'Dr',       // DRACHMA SIGN
+        "\u{20B0}" => 'Pf',       // GERMAN PENNY SIGN
+        "\u{20B1}" => 'PHP',      // PESO SIGN
+        "\u{20B2}" => 'PYG',      // GUARANI SIGN
+        "\u{20B3}" => 'A',        // AUSTRAL SIGN
+        "\u{20B4}" => 'UAH',      // HRYVNIA SIGN
+        "\u{20B5}" => 'GHS',      // CEDI SIGN
+        "\u{20B6}" => 'lt',       // LIVRE TOURNOIS SIGN
+        "\u{20B7}" => 'Sm',       // SPESMILO SIGN
+        "\u{20B8}" => 'KZT',      // TENGE SIGN
+        "\u{20B9}" => 'INR',      // INDIAN RUPEE SIGN
+        "\u{20BA}" => 'TRY',      // TURKISH LIRA SIGN
+        "\u{20BB}" => 'Mk',       // NORDIC MARK SIGN
+        "\u{20BC}" => 'AZN',      // MANAT SIGN
+        "\u{20BD}" => 'RUB',      // RUBLE SIGN
+        "\u{20BE}" => 'GEL',      // LARI SIGN
+        "\u{20BF}" => 'BTC',      // BITCOIN SIGN
+        "\u{20C0}" => 'KGS',      // SOM SIGN
+        "\u{20C1}" => 'SAR',      // SAUDI RIYAL SIGN
+        "\u{FDFC}" => 'IRR',      // RIAL SIGN
+        "\u{FE69}" => '$',        // SMALL DOLLAR SIGN => DOLLAR SIGN
+        "\u{FF04}" => '$',        // FULLWIDTH DOLLAR SIGN => DOLLAR SIGN
+        "\u{FFE0}" => 'c',        // FULLWIDTH CENT SIGN => LATIN SMALL LETTER C
         "\u{FFE1}" => "\u{00A3}", // FULLWIDTH POUND SIGN => POUND SIGN
         "\u{FFE5}" => "\u{00A5}", // FULLWIDTH YEN SIGN => YEN SIGN
-        "\u{FFE6}" => "KRW",      // FULLWIDTH WON SIGN
+        "\u{FFE6}" => 'KRW',      // FULLWIDTH WON SIGN
     ];
 }

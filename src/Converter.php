@@ -4,6 +4,20 @@ declare(strict_types=1);
 
 namespace BenMorel\GsmCharsetConverter;
 
+use InvalidArgumentException;
+use LogicException;
+
+use function array_flip;
+use function array_map;
+use function bin2hex;
+use function implode;
+use function mb_check_encoding;
+use function preg_split;
+use function strlen;
+use function strtoupper;
+
+use const PREG_SPLIT_NO_EMPTY;
+
 /**
  * Converts GSM 03.38 strings to and from UTF-8.
  */
@@ -28,7 +42,7 @@ final class Converter
         // Convert all values to strings as the array keys for digits are converted to int by PHP.
         $this->utf8ToGsm = array_map(
             static fn (int|string $value) => (string) $value,
-            array_flip(Charset::GSM_TO_UTF8)
+            array_flip(Charset::GSM_TO_UTF8),
         );
 
         // Create the base dictionary + transliteration
@@ -38,7 +52,7 @@ final class Converter
             // Transliterate character by character, as the output string may contain several chars
             $to = $this->splitUtf8String($to);
 
-            $to = array_map(fn (string $char) : string => $this->utf8ToGsm[$char], $to);
+            $to = array_map(fn (string $char): string => $this->utf8ToGsm[$char], $to);
 
             $this->utf8ToGsmWithTranslit[$from] = implode('', $to);
         }
@@ -52,9 +66,9 @@ final class Converter
      * @param string $string The GSM charset string to convert. If the string is not a valid GSM charset string,
      *                       an exception is thrown.
      *
-     * @throws \InvalidArgumentException If an error occurs.
+     * @throws InvalidArgumentException If an error occurs.
      */
-    public function convertGsmToUtf8(string $string) : string
+    public function convertGsmToUtf8(string $string): string
     {
         $result = '';
         $length = strlen($string);
@@ -66,9 +80,9 @@ final class Converter
 
             if ($char === "\x1B") {
                 if ($i + 1 === $length) {
-                    throw new \InvalidArgumentException(
+                    throw new InvalidArgumentException(
                         'The input string is not valid GSM 03.38: ' .
-                        'it contains an ESC char at the end of the string.'
+                        'it contains an ESC char at the end of the string.',
                     );
                 }
 
@@ -76,9 +90,9 @@ final class Converter
             }
 
             if (! isset($dictionary[$char])) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'The input string is not valid GSM 03.38: ' .
-                    'char ' . strtoupper(bin2hex($char)) . ' is unknown.'
+                    'char ' . strtoupper(bin2hex($char)) . ' is unknown.',
                 );
             }
 
@@ -103,9 +117,9 @@ final class Converter
      *                                  If this parameter is omitted or null, and the string to convert contains any
      *                                  character that cannot be replaced, an exception is thrown.
      *
-     * @throws \InvalidArgumentException If an error occurs.
+     * @throws InvalidArgumentException If an error occurs.
      */
-    public function convertUtf8ToGsm(string $string, bool $translit, ?string $replaceChars = null) : string
+    public function convertUtf8ToGsm(string $string, bool $translit, ?string $replaceChars = null): string
     {
         $dictionary = $translit ? $this->utf8ToGsmWithTranslit : $this->utf8ToGsm;
 
@@ -116,8 +130,8 @@ final class Converter
 
             foreach ($chars as $char) {
                 if (! isset($this->utf8ToGsm[$char])) {
-                    throw new \InvalidArgumentException(
-                        'Replacement string must contain only GSM 03.38 compatible chars.'
+                    throw new InvalidArgumentException(
+                        'Replacement string must contain only GSM 03.38 compatible chars.',
                     );
                 }
 
@@ -135,9 +149,9 @@ final class Converter
             } elseif ($replaceChars !== null) {
                 $result .= $replaceChars;
             } else {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'UTF-8 character ' . strtoupper(bin2hex($char)) . ' cannot be converted, ' .
-                    'and no replacement string has been provided.'
+                    'and no replacement string has been provided.',
                 );
             }
         }
@@ -163,45 +177,24 @@ final class Converter
      *                                  If this parameter is omitted or null, and the string to convert contains any
      *                                  character that cannot be replaced, an exception is thrown.
      *
-     * @throws \InvalidArgumentException If an error occurs.
+     * @throws InvalidArgumentException If an error occurs.
      */
-    public function cleanUpUtf8String(string $string, bool $translit, ?string $replaceChars = null) : string
+    public function cleanUpUtf8String(string $string, bool $translit, ?string $replaceChars = null): string
     {
         return $this->convertGsmToUtf8(
-            $this->convertUtf8ToGsm($string, $translit, $replaceChars)
+            $this->convertUtf8ToGsm($string, $translit, $replaceChars),
         );
     }
 
     /**
-     * @return string[]
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function splitUtf8String(string $string) : array
-    {
-        if (! mb_check_encoding($string, 'UTF-8')) {
-            throw new \InvalidArgumentException('The input string is not valid UTF-8.');
-        }
-
-        $result = preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
-
-        if ($result === false) {
-            throw new \LogicException('preg_split() failed.');
-        }
-
-        return $result;
-    }
-
-    /**
-     * Checks if string contains only GSM valid characters
+     * Checks if string contains only GSM valid characters.
      *
      * @param string $string The UTF-8 string to check. If the string is not valid UTF-8, an exception
      *                       is thrown.
-     * @return bool
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function isUtf8StringGsmCompatible(string $string) : bool
+    public function isUtf8StringGsmCompatible(string $string): bool
     {
         $chars = $this->splitUtf8String($string);
         foreach ($chars as $char) {
@@ -209,6 +202,27 @@ final class Converter
                 return false;
             }
         }
+
         return true;
+    }
+
+    /**
+     * @return string[]
+     *
+     * @throws InvalidArgumentException
+     */
+    private function splitUtf8String(string $string): array
+    {
+        if (! mb_check_encoding($string, 'UTF-8')) {
+            throw new InvalidArgumentException('The input string is not valid UTF-8.');
+        }
+
+        $result = preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
+
+        if ($result === false) {
+            throw new LogicException('preg_split() failed.');
+        }
+
+        return $result;
     }
 }

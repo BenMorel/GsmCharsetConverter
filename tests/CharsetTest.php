@@ -7,9 +7,27 @@ namespace BenMorel\GsmCharsetConverter\Tests;
 use BenMorel\GsmCharsetConverter\Charset;
 use PHPUnit\Framework\TestCase;
 
+use function array_flip;
+use function array_keys;
+use function array_map;
+use function array_merge;
+use function array_unique;
+use function array_values;
+use function bin2hex;
+use function chr;
+use function dechex;
+use function in_array;
+use function mb_check_encoding;
+use function mb_convert_encoding;
+use function mb_strlen;
+use function mb_substr;
+use function ord;
+use function sprintf;
+use function strlen;
+
 class CharsetTest extends TestCase
 {
-    public function testUtf8Encoding() : void
+    public function testUtf8Encoding(): void
     {
         foreach (Charset::GSM_TO_UTF8 as $char) {
             self::assertTrue(mb_check_encoding($char, 'UTF-8'));
@@ -21,7 +39,7 @@ class CharsetTest extends TestCase
         }
     }
 
-    public function testGsmCharsetKeys() : void
+    public function testGsmCharsetKeys(): void
     {
         foreach (Charset::GSM_TO_UTF8 as $key => $value) {
             $key = (string) $key;
@@ -29,11 +47,13 @@ class CharsetTest extends TestCase
             switch (strlen($key)) {
                 case 1:
                     self::assertLessThanOrEqual(0x7F, ord($key));
+
                     break;
 
                 case 2:
                     self::assertSame("\x1B", $key[0]);
                     self::assertLessThanOrEqual(0x7F, ord($key[1]));
+
                     break;
 
                 default:
@@ -42,7 +62,7 @@ class CharsetTest extends TestCase
         }
     }
 
-    public function testGsmCharsetCoverage() : void
+    public function testGsmCharsetCoverage(): void
     {
         $esc = 0x1B;
 
@@ -64,7 +84,7 @@ class CharsetTest extends TestCase
             "\x3D",
             "\x3E",
             "\x40",
-            "\x65"
+            "\x65",
         ];
 
         foreach ($extensionTable as $char) {
@@ -73,13 +93,13 @@ class CharsetTest extends TestCase
         }
     }
 
-    public function testGsmCharsetValuesAreUnique() : void
+    public function testGsmCharsetValuesAreUnique(): void
     {
         $values = array_values(Charset::GSM_TO_UTF8);
         self::assertSame($values, array_unique($values));
     }
 
-    public function testTransliterateMapsToExistingGsmChars()
+    public function testTransliterateMapsToExistingGsmChars(): void
     {
         $gsmChars = array_flip(Charset::GSM_TO_UTF8);
 
@@ -93,20 +113,20 @@ class CharsetTest extends TestCase
         }
     }
 
-    public function testTransliterateDoesNotOverlapGsmCharset() : void
+    public function testTransliterateDoesNotOverlapGsmCharset(): void
     {
         foreach (array_keys(Charset::TRANSLITERATE) as $char) {
             self::assertFalse(in_array($char, Charset::GSM_TO_UTF8, true));
         }
     }
 
-    public function testCoverage() : void
+    public function testCoverage(): void
     {
         $expectedChars = $this->getExpectedChars();
 
         $actualChars = array_merge(
             array_values(Charset::GSM_TO_UTF8),
-            array_keys(Charset::TRANSLITERATE)
+            array_keys(Charset::TRANSLITERATE),
         );
 
         foreach ($expectedChars as $char) {
@@ -115,7 +135,7 @@ class CharsetTest extends TestCase
         }
     }
 
-    private function getExpectedChars() : array
+    private function getExpectedChars(): array
     {
         // Control chars, covered by GSM charset
 

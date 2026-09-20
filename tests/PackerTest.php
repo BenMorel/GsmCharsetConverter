@@ -8,6 +8,10 @@ use BenMorel\GsmCharsetConverter\Packer;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
+use function bin2hex;
+use function hex2bin;
+use function strtoupper;
+
 class PackerTest extends TestCase
 {
     /**
@@ -16,7 +20,7 @@ class PackerTest extends TestCase
      * @param string $input     The 7-bit input string.
      * @param string $outputHex The expected output string, hex-encoded.
      */
-    public function testPack(string $input, string $outputHex) : void
+    public function testPack(string $input, string $outputHex): void
     {
         $packer = new Packer();
         $actualOutput = $packer->pack($input);
@@ -25,7 +29,7 @@ class PackerTest extends TestCase
         self::assertSame(hex2bin($outputHex), $actualOutput, $message);
     }
 
-    public function providerPack() : array
+    public function providerPack(): array
     {
         return [
             ['', ''],
@@ -69,11 +73,11 @@ class PackerTest extends TestCase
             ['@y-$LW>&,5[Y]7>?oag', 'C07C8BC4BCFA4CACDA36DBBDF97EEFF019'],
             ['4^%1]ci.]BjJ]aL&S7L', '346F29D61DA75D5DA15AD90D334DD31B13'],
 
-            ['The quick brown fox jumps over the lazy dog', '54741914AFA7C76B9058FEBEBB41E6371EA4AEB7E173D0DB5E9683E8E832881DD6E741E4F719']
+            ['The quick brown fox jumps over the lazy dog', '54741914AFA7C76B9058FEBEBB41E6371EA4AEB7E173D0DB5E9683E8E832881DD6E741E4F719'],
         ];
     }
 
-    public function testPack8bitData() : void
+    public function testPack8bitData(): void
     {
         $packer = new Packer();
 
@@ -89,12 +93,12 @@ class PackerTest extends TestCase
      * @param string $output   The expected 7-bit output string.
      * @param string $inputHex The input string, hex-encoded.
      */
-    public function testUnpack(string $output, string $inputHex) : void
+    public function testUnpack(string $output, string $inputHex): void
     {
         $packer = new Packer();
         $actualOutput = $packer->unpack(hex2bin($inputHex));
 
-        $message = bin2hex($actualOutput) . " != " . bin2hex($output);
+        $message = bin2hex($actualOutput) . ' != ' . bin2hex($output);
 
         self::assertSame($output, $actualOutput, $message);
     }
@@ -108,7 +112,7 @@ class PackerTest extends TestCase
      * @param string $string An unpacked 7-bit string.
      * @param string $packed The packed 8-bit string, with a length multiple of 8 and ending with 0x00 or 0x01.
      */
-    public function testAmbiguousUnpack(string $string, string $packed) : void
+    public function testAmbiguousUnpack(string $string, string $packed): void
     {
         $packer = new Packer();
 
@@ -119,7 +123,7 @@ class PackerTest extends TestCase
         self::assertSame($string, $packer->unpack($packed));
     }
 
-    public function providedAmbiguousUnpack() : array
+    public function providedAmbiguousUnpack(): array
     {
         return [
             ["\x7F\x7F\x7F\x7F\x7F\x7F\x3F", "\xFF\xFF\xFF\xFF\xFF\xFF\x00"],

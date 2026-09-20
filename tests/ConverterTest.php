@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace BenMorel\GsmCharsetConverter\Tests;
 
 use BenMorel\GsmCharsetConverter\Converter;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+
+use function bin2hex;
+use function strtoupper;
 
 class ConverterTest extends TestCase
 {
@@ -15,13 +19,13 @@ class ConverterTest extends TestCase
      * @param string $input  The GSM 03.38 input string.
      * @param string $output The expected UTF-8 output string.
      */
-    public function testConvertGsmToUtf8(string $input, string $output) : void
+    public function testConvertGsmToUtf8(string $input, string $output): void
     {
         $converter = new Converter();
         self::assertSame($output, $converter->convertGsmToUtf8($input));
     }
 
-    public function providerConvertGsmToUtf8() : array
+    public function providerConvertGsmToUtf8(): array
     {
         return [
             // empty string
@@ -31,7 +35,7 @@ class ConverterTest extends TestCase
             ["\x00\x01\x02\x03\x04\x05\x06\x07", '@£$¥èéùì'],
             ["\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F", "òÇ\nØø\rÅå"],
             ["\x10\x11\x12\x13\x14\x15\x16\x17", 'Δ_ΦΓΛΩΠΨ'],
-            ["\x18\x19\x1A\x1C\x1D\x1E\x1F",     "ΣΘΞÆæßÉ"],
+            ["\x18\x19\x1A\x1C\x1D\x1E\x1F",     'ΣΘΞÆæßÉ'],
             ["\x20\x21\x22\x23\x24\x25\x26\x27", ' !"#¤%&\''],
             ["\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F", '()*+,-./'],
             ["\x30\x31\x32\x33\x34\x35\x36\x37", '01234567'],
@@ -51,7 +55,7 @@ class ConverterTest extends TestCase
             ["\x1B\x40\x1B\x65",                 '|€'],
 
             // mix of both
-            ["\x40\x20\x7D\x7C\x00\x1B\x65.\x7F!", '¡ ñö@€.à!']
+            ["\x40\x20\x7D\x7C\x00\x1B\x65.\x7F!", '¡ ñö@€.à!'],
         ];
     }
 
@@ -61,17 +65,17 @@ class ConverterTest extends TestCase
      * @param string $string          The string to test.
      * @param string $expectedMessage The expected exception message.
      */
-    public function testConvertGsmToUtf8WithInvalidString(string $string, string $expectedMessage) : void
+    public function testConvertGsmToUtf8WithInvalidString(string $string, string $expectedMessage): void
     {
         $converter = new Converter();
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedMessage);
 
         $converter->convertGsmToUtf8($string);
     }
 
-    public function providerConvertGsmToUtf8WithInvalidString() : array
+    public function providerConvertGsmToUtf8WithInvalidString(): array
     {
         return [
             ["\x1B", 'contains an ESC char at the end of the string'],
@@ -89,12 +93,12 @@ class ConverterTest extends TestCase
     /**
      * @dataProvider providerConvertUtf8ToGsm
      *
-     * @param string      $input           The UTF-8 input string.
-     * @param bool        $translit        Whether to use transliteration.
-     * @param string|null $replaceChars    The optional replacement string for unknown chars.
-     * @param string      $output          The expected GSM 03.38 output string.
+     * @param string      $input        The UTF-8 input string.
+     * @param bool        $translit     Whether to use transliteration.
+     * @param string|null $replaceChars The optional replacement string for unknown chars.
+     * @param string      $output       The expected GSM 03.38 output string.
      */
-    public function testConvertUtf8ToGsm(string $input, bool $translit, ?string $replaceChars, string $output) : void
+    public function testConvertUtf8ToGsm(string $input, bool $translit, ?string $replaceChars, string $output): void
     {
         $converter = new Converter();
         $actualOutput = $converter->convertUtf8ToGsm($input, $translit, $replaceChars);
@@ -103,7 +107,7 @@ class ConverterTest extends TestCase
         self::assertSame($output, $actualOutput, $message);
     }
 
-    public function providerConvertUtf8ToGsm() : iterable
+    public function providerConvertUtf8ToGsm(): iterable
     {
         // Fully GSM 03.38 compatible string tests;
         // Let's tests these with all parameter combinations, as the output should be the same.
@@ -116,7 +120,7 @@ class ConverterTest extends TestCase
             ['@£$¥èéùì',   "\x00\x01\x02\x03\x04\x05\x06\x07"],
             ["òÇ\nØø\rÅå", "\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F"],
             ['Δ_ΦΓΛΩΠΨ',   "\x10\x11\x12\x13\x14\x15\x16\x17"],
-            ["ΣΘΞÆæßÉ",    "\x18\x19\x1A\x1C\x1D\x1E\x1F"],
+            ['ΣΘΞÆæßÉ',    "\x18\x19\x1A\x1C\x1D\x1E\x1F"],
             [' !"#¤%&\'',  "\x20\x21\x22\x23\x24\x25\x26\x27"],
             ['()*+,-./',   "\x28\x29\x2A\x2B\x2C\x2D\x2E\x2F"],
             ['01234567',   "\x30\x31\x32\x33\x34\x35\x36\x37"],
@@ -136,8 +140,8 @@ class ConverterTest extends TestCase
             ['|€',    "\x1B\x40\x1B\x65"],
 
             // mix
-            ["¡Lörèm/[ìpsüm] dòlør_sit ämét!", "\x40\x4C\x7C\x72\x04\x6D\x2F\x1B\x3C\x07\x70\x73\x7E\x6D\x1B\x3E\x20\x64\x08\x6C\x0C\x72\x11\x73\x69\x74\x20\x7B\x6D\x05\x74\x21"],
-            ["¿ñon s€mper {màùris} dåpibus?",  "\x60\x7D\x6F\x6E\x20\x73\x1B\x65\x6D\x70\x65\x72\x20\x1B\x28\x6D\x7F\x06\x72\x69\x73\x1B\x29\x20\x64\x0F\x70\x69\x62\x75\x73\x3F"]
+            ['¡Lörèm/[ìpsüm] dòlør_sit ämét!', "\x40\x4C\x7C\x72\x04\x6D\x2F\x1B\x3C\x07\x70\x73\x7E\x6D\x1B\x3E\x20\x64\x08\x6C\x0C\x72\x11\x73\x69\x74\x20\x7B\x6D\x05\x74\x21"],
+            ['¿ñon s€mper {màùris} dåpibus?',  "\x60\x7D\x6F\x6E\x20\x73\x1B\x65\x6D\x70\x65\x72\x20\x1B\x28\x6D\x7F\x06\x72\x69\x73\x1B\x29\x20\x64\x0F\x70\x69\x62\x75\x73\x3F"],
         ];
 
         foreach ($tests as [$input, $output]) {
@@ -152,27 +156,27 @@ class ConverterTest extends TestCase
 
         $tests = [
             // full table to single chars
-            ["` ¢¦¨", "\x27\x20\x63\x1B\x40\x22"],
-            ["ª«¬­¯", "\x61\x22\x2D\x2D\x11"],
-            ["°²³´µ", "\x6F\x32\x33\x27\x75"],
-            ["¶·¸¹º", "\x5F\x2E\x2C\x31\x6F"],
-            ["»ÀÁÂÃ", "\x22\x41\x41\x41\x41"],
-            ["ÈÊËÌÍ", "\x45\x45\x45\x49\x49"],
-            ["ÎÏÐÒÓ", "\x49\x49\x44\x4F\x4F"],
-            ["ÔÕ×ÙÚ", "\x4F\x4F\x78\x55\x55"],
-            ["ÛÝáâã", "\x55\x59\x61\x61\x61"],
-            ["çêëíî", "\x63\x65\x65\x69\x69"],
-            ["ïðóôõ", "\x69\x64\x6F\x6F\x6F"],
-            ["÷úûýÿ", "\x2F\x75\x75\x79\x79"],
+            ['` ¢¦¨', "\x27\x20\x63\x1B\x40\x22"],
+            ['ª«¬­¯', "\x61\x22\x2D\x2D\x11"],
+            ['°²³´µ', "\x6F\x32\x33\x27\x75"],
+            ['¶·¸¹º', "\x5F\x2E\x2C\x31\x6F"],
+            ['»ÀÁÂÃ', "\x22\x41\x41\x41\x41"],
+            ['ÈÊËÌÍ', "\x45\x45\x45\x49\x49"],
+            ['ÎÏÐÒÓ', "\x49\x49\x44\x4F\x4F"],
+            ['ÔÕ×ÙÚ', "\x4F\x4F\x78\x55\x55"],
+            ['ÛÝáâã', "\x55\x59\x61\x61\x61"],
+            ['çêëíî', "\x63\x65\x65\x69\x69"],
+            ['ïðóôõ', "\x69\x64\x6F\x6F\x6F"],
+            ['÷úûýÿ', "\x2F\x75\x75\x79\x79"],
 
             // full table to multiple chars
             ["\u{00A9}\u{00AE}\u{00B1}\u{00BC}", "\x28\x63\x29\x28\x72\x29\x2B\x2F\x2D\x31\x2F\x34"],
             ["\u{00BD}\u{00BE}\u{00DE}\u{00FE}", "\x31\x2F\x32\x33\x2F\x34\x54\x48\x74\x68"],
 
             // currency signs
-            ["₹₴₽", "\x49\x4E\x52\x55\x41\x48\x52\x55\x42"],
-            ["₢", "\x43\x72\x02"],
-            ["₤￡￥＄﹩", "\x01\x01\x03\x02\x02"],
+            ['₹₴₽', "\x49\x4E\x52\x55\x41\x48\x52\x55\x42"],
+            ['₢', "\x43\x72\x02"],
+            ['₤￡￥＄﹩', "\x01\x01\x03\x02\x02"],
 
             // mix of native and transliterable
             ['À NOËL', "\x41\x20\x4E\x4F\x45\x4C"],
@@ -187,12 +191,12 @@ class ConverterTest extends TestCase
         // Strings with unsupported characters, replacement only.
 
         yield ['À NOËL 🎁', false, '?', "\x3F\x20\x4E\x4F\x3F\x4C\x20\x3F"];
-        yield ["à 🌲🎁 noël", false, '|', "\x7F\x20\x1B\x40\x1B\x40\x20\x6E\x6F\x1B\x40\x6C"];
+        yield ['à 🌲🎁 noël', false, '|', "\x7F\x20\x1B\x40\x1B\x40\x20\x6E\x6F\x1B\x40\x6C"];
 
         // Strings with unsupported characters, transliteration and replacement.
 
         yield ['À NOËL 🎁', true, '?', "\x41\x20\x4E\x4F\x45\x4C\x20\x3F"];
-        yield ["à 🌲🎁 noël", true, '|', "\x7F\x20\x1B\x40\x1B\x40\x20\x6E\x6F\x65\x6C"];
+        yield ['à 🌲🎁 noël', true, '|', "\x7F\x20\x1B\x40\x1B\x40\x20\x6E\x6F\x65\x6C"];
     }
 
     /**
@@ -203,11 +207,11 @@ class ConverterTest extends TestCase
      * @param string|null $replaceChars    The optional replacement string for unknown chars.
      * @param string      $expectedMessage The expected exception message.
      */
-    public function testConvertUtf8ToGsmWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage) : void
+    public function testConvertUtf8ToGsmWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage): void
     {
         $converter = new Converter();
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedMessage);
 
         $converter->convertUtf8ToGsm($string, $translit, $replaceChars);
@@ -223,17 +227,17 @@ class ConverterTest extends TestCase
      * @param string|null $replaceChars    The optional replacement string for unknown chars.
      * @param string      $expectedMessage The expected exception message.
      */
-    public function testCleanUpUtf8StringWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage) : void
+    public function testCleanUpUtf8StringWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage): void
     {
         $converter = new Converter();
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedMessage);
 
         $converter->cleanUpUtf8String($string, $translit, $replaceChars);
     }
 
-    public function providerConvertUtf8ToGsmWithInvalidParams() : array
+    public function providerConvertUtf8ToGsmWithInvalidParams(): array
     {
         return [
             // Invalid input string
@@ -250,25 +254,25 @@ class ConverterTest extends TestCase
             ['汉字', true, null, 'UTF-8 character E6B189 cannot be converted'],
 
             // Invalid replacement string
-            ['', false, "ç", 'Replacement string must contain only GSM 03.38 compatible chars'],
+            ['', false, 'ç', 'Replacement string must contain only GSM 03.38 compatible chars'],
         ];
     }
 
     /**
      * @dataProvider providerCleanUpUtf8String
      *
-     * @param string      $input           The UTF-8 input string.
-     * @param bool        $translit        Whether to use transliteration.
-     * @param string|null $replaceChars    The optional replacement string for unknown chars.
-     * @param string      $output          The expected UTF-8 output string.
+     * @param string      $input        The UTF-8 input string.
+     * @param bool        $translit     Whether to use transliteration.
+     * @param string|null $replaceChars The optional replacement string for unknown chars.
+     * @param string      $output       The expected UTF-8 output string.
      */
-    public function testCleanUpUtf8String(string $input, bool $translit, ?string $replaceChars, string $output) : void
+    public function testCleanUpUtf8String(string $input, bool $translit, ?string $replaceChars, string $output): void
     {
         $converter = new Converter();
         self::assertSame($output, $converter->cleanUpUtf8String($input, $translit, $replaceChars));
     }
 
-    public function providerCleanUpUtf8String() : iterable
+    public function providerCleanUpUtf8String(): iterable
     {
         // Fully GSM 03.38 compatible string tests;
         // Let's tests these with all parameter combinations, the output should always be the same as the input.
@@ -281,7 +285,7 @@ class ConverterTest extends TestCase
             '@£$¥èéùì',
             "òÇ\nØø\rÅå",
             'Δ_ΦΓΛΩΠΨ',
-            "ΣΘΞÆæßÉ",
+            'ΣΘΞÆæßÉ',
             ' !"#¤%&\'',
             '()*+,-./',
             '01234567',
@@ -301,8 +305,8 @@ class ConverterTest extends TestCase
             '|€',
 
             // mix
-            "¡Lörèm/[ìpsüm] dòlør_sit ämét!",
-            "¿ñon s€mper {màùris} dåpibus?",
+            '¡Lörèm/[ìpsüm] dòlør_sit ämét!',
+            '¿ñon s€mper {màùris} dåpibus?',
         ];
 
         foreach ($tests as $string) {
@@ -317,33 +321,33 @@ class ConverterTest extends TestCase
 
         $tests = [
             // full table to single chars
-            ["` ¢¦¨", "' c|\""],
-            ["ª«¬­¯", "a\"--_"],
-            ["°²³´µ", "o23'u"],
-            ["¶·¸¹º", "§.,1o"],
-            ["»ÀÁÂÃ", "\"AAAA"],
-            ["ÈÊËÌÍ", "EEEII"],
-            ["ÎÏÐÒÓ", "IIDOO"],
-            ["ÔÕ×ÙÚ", "OOxUU"],
-            ["ÛÝáâã", "UYaaa"],
-            ["çêëíî", "ceeii"],
-            ["ïðóôõ", "idooo"],
-            ["÷úûýÿ", "/uuyy"],
+            ['` ¢¦¨', "' c|\""],
+            ['ª«¬­¯', 'a"--_'],
+            ['°²³´µ', "o23'u"],
+            ['¶·¸¹º', '§.,1o'],
+            ['»ÀÁÂÃ', '"AAAA'],
+            ['ÈÊËÌÍ', 'EEEII'],
+            ['ÎÏÐÒÓ', 'IIDOO'],
+            ['ÔÕ×ÙÚ', 'OOxUU'],
+            ['ÛÝáâã', 'UYaaa'],
+            ['çêëíî', 'ceeii'],
+            ['ïðóôõ', 'idooo'],
+            ['÷úûýÿ', '/uuyy'],
 
-            ["ąĄćĆęĘłŁńŃśŚźŹżŻ", "aAcCeElLnNsSzZzZ"],
+            ['ąĄćĆęĘłŁńŃśŚźŹżŻ', 'aAcCeElLnNsSzZzZ'],
 
             // full table to multiple chars
-            ["©®±¼", '(c)(r)+/-1/4'],
-            ["½¾Þþ", '1/23/4THth'],
+            ['©®±¼', '(c)(r)+/-1/4'],
+            ['½¾Þþ', '1/23/4THth'],
 
             // currency signs
-            ["₠ ₡ ₢ ₣ ₤ ₥ ₦ ₧", 'ECU CRC Cr$ F £ m NGN Pts'],
-            ["₨ ₩ ₪ ₫ ₭ ₮ ₯ ₰", 'Rs KRW ILS VND LAK MNT Dr Pf'],
-            ["₱ ₲ ₳ ₴ ₵ ₶ ₷ ₸", 'PHP PYG A UAH GHS lt Sm KZT'],
-            ["₹ ₺ ₻ ₼ ₽ ₾ ₿ ⃀", 'INR TRY Mk AZN RUB GEL BTC KGS'],
+            ['₠ ₡ ₢ ₣ ₤ ₥ ₦ ₧', 'ECU CRC Cr$ F £ m NGN Pts'],
+            ['₨ ₩ ₪ ₫ ₭ ₮ ₯ ₰', 'Rs KRW ILS VND LAK MNT Dr Pf'],
+            ['₱ ₲ ₳ ₴ ₵ ₶ ₷ ₸', 'PHP PYG A UAH GHS lt Sm KZT'],
+            ['₹ ₺ ₻ ₼ ₽ ₾ ₿ ⃀', 'INR TRY Mk AZN RUB GEL BTC KGS'],
             ["֏ \u{060B} ৳ ฿ ៛ \u{20C1} \u{FDFC}", 'AMD AFN BDT THB KHR SAR IRR'],
-            ["﹩ ＄ ￠ ￡ ￥ ￦", '$ $ c £ ¥ KRW'],
-            ["₹500 = ₽5000", 'INR500 = RUB5000'],
+            ['﹩ ＄ ￠ ￡ ￥ ￦', '$ $ c £ ¥ KRW'],
+            ['₹500 = ₽5000', 'INR500 = RUB5000'],
 
             // mix of native and transliterable
             ['À NOËL', 'A NOEL'],
@@ -358,27 +362,27 @@ class ConverterTest extends TestCase
         // Strings with unsupported characters, replacement only.
 
         yield ['À NOËL 🎁', false, '?', '? NO?L ?'];
-        yield ["à 🌲🎁 noël", false, '|', 'à || no|l'];
+        yield ['à 🌲🎁 noël', false, '|', 'à || no|l'];
 
         // Strings with unsupported characters, transliteration and replacement.
 
         yield ['À NOËL 🎁', true, '?', 'A NOEL ?'];
-        yield ["à 🌲🎁 noël", true, '|', 'à || noel'];
+        yield ['à 🌲🎁 noël', true, '|', 'à || noel'];
     }
 
     /**
      * @dataProvider providerIsUtf8StringGsmCompatible
      *
-     * @param string    $input           The UTF-8 input string.
-     * @param bool      $output          The expected UTF-8 output string.
+     * @param string $input  The UTF-8 input string.
+     * @param bool   $output The expected UTF-8 output string.
      */
-    public function testIsUtf8StringGsmCompatible(string $input, bool $output) : void
+    public function testIsUtf8StringGsmCompatible(string $input, bool $output): void
     {
         $converter = new Converter();
         self::assertSame($output, $converter->isUtf8StringGsmCompatible($input));
     }
 
-    public function providerIsUtf8StringGsmCompatible() : iterable
+    public function providerIsUtf8StringGsmCompatible(): iterable
     {
         $tests = [
             // empty string
@@ -388,7 +392,7 @@ class ConverterTest extends TestCase
             '@£$¥èéùì',
             "òÇ\nØø\rÅå",
             'Δ_ΦΓΛΩΠΨ',
-            "ΣΘΞÆæßÉ",
+            'ΣΘΞÆæßÉ',
             ' !"#¤%&\'',
             '()*+,-./',
             '01234567',
@@ -408,8 +412,8 @@ class ConverterTest extends TestCase
             '|€',
 
             // mix
-            "¡Lörèm/[ìpsüm] dòlør_sit ämét!",
-            "¿ñon s€mper {màùris} dåpibus?",
+            '¡Lörèm/[ìpsüm] dòlør_sit ämét!',
+            '¿ñon s€mper {màùris} dåpibus?',
         ];
 
         foreach ($tests as $string) {
@@ -419,30 +423,30 @@ class ConverterTest extends TestCase
         // transliterable
 
         $tests = [
-            "` ¢¦¨",
-            "ª«¬­¯",
-            "°²³´µ",
-            "¶·¸¹º",
-            "»ÀÁÂÃ",
-            "ÈÊËÌÍ",
-            "ÎÏÐÒÓ",
-            "ÔÕ×ÙÚ",
-            "ÛÝáâã",
-            "çêëíî",
-            "ïðóôõ",
-            "÷úûýÿ",
+            '` ¢¦¨',
+            'ª«¬­¯',
+            '°²³´µ',
+            '¶·¸¹º',
+            '»ÀÁÂÃ',
+            'ÈÊËÌÍ',
+            'ÎÏÐÒÓ',
+            'ÔÕ×ÙÚ',
+            'ÛÝáâã',
+            'çêëíî',
+            'ïðóôõ',
+            '÷úûýÿ',
 
-            "ąĄćĆęĘłŁńŃśŚźŹżŻ",
+            'ąĄćĆęĘłŁńŃśŚźŹżŻ',
 
-            "©®±¼",
-            "½¾Þþ",
+            '©®±¼',
+            '½¾Þþ',
 
             'À NOËL',
             'à noël',
 
             '₹ ₴ ₽',
 
-            '🎁'
+            '🎁',
         ];
 
         foreach ($tests as $input) {

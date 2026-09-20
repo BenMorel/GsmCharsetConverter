@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace BenMorel\GsmCharsetConverter;
 
+use InvalidArgumentException;
+
+use function chr;
+use function ord;
+use function strlen;
+
 final class Packer
 {
     /**
@@ -19,9 +25,9 @@ final class Packer
     /**
      * Packs a 7-bit string into an 8-bit string.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    public function pack(string $string) : string
+    public function pack(string $string): string
     {
         $result = '';
         $length = strlen($string);
@@ -35,7 +41,7 @@ final class Packer
             $septet = ord($string[$i]);
 
             if (($septet & 0x80) !== 0) {
-                throw new \InvalidArgumentException('Input must not contain 8-bit chars.');
+                throw new InvalidArgumentException('Input must not contain 8-bit chars.');
             }
 
             if ($i + 1 === $length) {
@@ -68,7 +74,7 @@ final class Packer
      * or if the zeros are just padding. This method always resolves to dropping the last zero in this special case:
      * 0xFFFFFFFFFFFF01 will unpack to F7F7F7F7F7F7F.
      */
-    public function unpack(string $string) : string
+    public function unpack(string $string): string
     {
         $result = '';
         $length = strlen($string);
