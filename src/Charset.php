@@ -341,5 +341,56 @@ final class Charset
         "\u{0171}" => "\u{00FC}", // ű => ü
         "\u{0150}" => "\u{00D6}", // Ő => Ö
         "\u{0151}" => "\u{00F6}", // ő => ö
+
+        // Currency signs.
+        // Currencies still in use are mapped to their ISO 4217 code (or de facto ticker when there is none);
+        // signs shared by several currencies in use are mapped to their generic abbreviation.
+        // Historical currencies and subunits are mapped to the abbreviation in use at the time.
+        "\u{058F}" => "AMD",      // ARMENIAN DRAM SIGN
+        "\u{060B}" => "AFN",      // AFGHANI SIGN
+        "\u{09F3}" => "BDT",      // BENGALI RUPEE SIGN (taka)
+        "\u{0E3F}" => "THB",      // THAI CURRENCY SYMBOL BAHT
+        "\u{17DB}" => "KHR",      // KHMER CURRENCY SYMBOL RIEL
+        "\u{20A0}" => "ECU",      // EURO-CURRENCY SIGN
+        "\u{20A1}" => "CRC",      // COLON SIGN
+        "\u{20A2}" => "Cr$",      // CRUZEIRO SIGN
+        "\u{20A3}" => "F",        // FRENCH FRANC SIGN
+        "\u{20A4}" => "\u{00A3}", // LIRA SIGN => POUND SIGN
+        "\u{20A5}" => "m",        // MILL SIGN
+        "\u{20A6}" => "NGN",      // NAIRA SIGN
+        "\u{20A7}" => "Pts",      // PESETA SIGN
+        "\u{20A8}" => "Rs",       // RUPEE SIGN
+        "\u{20A9}" => "KRW",      // WON SIGN
+        "\u{20AA}" => "ILS",      // NEW SHEQEL SIGN
+        "\u{20AB}" => "VND",      // DONG SIGN
+        // 20AC = EURO SIGN is part of the GSM charset extension table
+        "\u{20AD}" => "LAK",      // KIP SIGN
+        "\u{20AE}" => "MNT",      // TUGRIK SIGN
+        "\u{20AF}" => "Dr",       // DRACHMA SIGN
+        "\u{20B0}" => "Pf",       // GERMAN PENNY SIGN
+        "\u{20B1}" => "PHP",      // PESO SIGN
+        "\u{20B2}" => "PYG",      // GUARANI SIGN
+        "\u{20B3}" => "A",        // AUSTRAL SIGN
+        "\u{20B4}" => "UAH",      // HRYVNIA SIGN
+        "\u{20B5}" => "GHS",      // CEDI SIGN
+        "\u{20B6}" => "lt",       // LIVRE TOURNOIS SIGN
+        "\u{20B7}" => "Sm",       // SPESMILO SIGN
+        "\u{20B8}" => "KZT",      // TENGE SIGN
+        "\u{20B9}" => "INR",      // INDIAN RUPEE SIGN
+        "\u{20BA}" => "TRY",      // TURKISH LIRA SIGN
+        "\u{20BB}" => "Mk",       // NORDIC MARK SIGN
+        "\u{20BC}" => "AZN",      // MANAT SIGN
+        "\u{20BD}" => "RUB",      // RUBLE SIGN
+        "\u{20BE}" => "GEL",      // LARI SIGN
+        "\u{20BF}" => "BTC",      // BITCOIN SIGN
+        "\u{20C0}" => "KGS",      // SOM SIGN
+        "\u{20C1}" => "SAR",      // SAUDI RIYAL SIGN
+        "\u{FDFC}" => "IRR",      // RIAL SIGN
+        "\u{FE69}" => "$",        // SMALL DOLLAR SIGN => DOLLAR SIGN
+        "\u{FF04}" => "$",        // FULLWIDTH DOLLAR SIGN => DOLLAR SIGN
+        "\u{FFE0}" => "c",        // FULLWIDTH CENT SIGN => LATIN SMALL LETTER C
+        "\u{FFE1}" => "\u{00A3}", // FULLWIDTH POUND SIGN => POUND SIGN
+        "\u{FFE5}" => "\u{00A5}", // FULLWIDTH YEN SIGN => YEN SIGN
+        "\u{FFE6}" => "KRW",      // FULLWIDTH WON SIGN
     ];
 }

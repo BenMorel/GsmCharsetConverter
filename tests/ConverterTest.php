@@ -169,6 +169,11 @@ class ConverterTest extends TestCase
             ["\u{00A9}\u{00AE}\u{00B1}\u{00BC}", "\x28\x63\x29\x28\x72\x29\x2B\x2F\x2D\x31\x2F\x34"],
             ["\u{00BD}\u{00BE}\u{00DE}\u{00FE}", "\x31\x2F\x32\x33\x2F\x34\x54\x48\x74\x68"],
 
+            // currency signs
+            ["₹₴₽", "\x49\x4E\x52\x55\x41\x48\x52\x55\x42"],
+            ["₢", "\x43\x72\x02"],
+            ["₤￡￥＄﹩", "\x01\x01\x03\x02\x02"],
+
             // mix of native and transliterable
             ['À NOËL', "\x41\x20\x4E\x4F\x45\x4C"],
             ['à noël', "\x7F\x20\x6E\x6F\x65\x6C"],
@@ -331,6 +336,15 @@ class ConverterTest extends TestCase
             ["©®±¼", '(c)(r)+/-1/4'],
             ["½¾Þþ", '1/23/4THth'],
 
+            // currency signs
+            ["₠ ₡ ₢ ₣ ₤ ₥ ₦ ₧", 'ECU CRC Cr$ F £ m NGN Pts'],
+            ["₨ ₩ ₪ ₫ ₭ ₮ ₯ ₰", 'Rs KRW ILS VND LAK MNT Dr Pf'],
+            ["₱ ₲ ₳ ₴ ₵ ₶ ₷ ₸", 'PHP PYG A UAH GHS lt Sm KZT'],
+            ["₹ ₺ ₻ ₼ ₽ ₾ ₿ ⃀", 'INR TRY Mk AZN RUB GEL BTC KGS'],
+            ["֏ \u{060B} ৳ ฿ ៛ \u{20C1} \u{FDFC}", 'AMD AFN BDT THB KHR SAR IRR'],
+            ["﹩ ＄ ￠ ￡ ￥ ￦", '$ $ c £ ¥ KRW'],
+            ["₹500 = ₽5000", 'INR500 = RUB5000'],
+
             // mix of native and transliterable
             ['À NOËL', 'A NOEL'],
             ['à noël', 'à noel'],
@@ -425,6 +439,8 @@ class ConverterTest extends TestCase
 
             'À NOËL',
             'à noël',
+
+            '₹ ₴ ₽',
 
             '🎁'
         ];

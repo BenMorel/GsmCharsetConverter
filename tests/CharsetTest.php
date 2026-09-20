@@ -148,9 +148,29 @@ class CharsetTest extends TestCase
         $expectedCodepoints[] = 0x03A8;
         $expectedCodepoints[] = 0x03A9;
 
-        // Euro sign, covered by GSM charset
+        // Currency Symbols block, covered by GSM charset (euro sign) & TRANSLITERATE
 
-        $expectedCodepoints[] = 0x20AC;
+        for ($i = 0x20A0; $i <= 0x20C1; $i++) {
+            $expectedCodepoints[] = $i;
+        }
+
+        // Currency signs from other blocks, covered by TRANSLITERATE
+
+        $expectedCodepoints[] = 0x058F;
+        $expectedCodepoints[] = 0x060B;
+        $expectedCodepoints[] = 0x09F3;
+        $expectedCodepoints[] = 0x0E3F;
+        $expectedCodepoints[] = 0x17DB;
+        $expectedCodepoints[] = 0xFDFC;
+
+        // Small & fullwidth variants of currency signs, covered by TRANSLITERATE
+
+        $expectedCodepoints[] = 0xFE69;
+        $expectedCodepoints[] = 0xFF04;
+        $expectedCodepoints[] = 0xFFE0;
+        $expectedCodepoints[] = 0xFFE1;
+        $expectedCodepoints[] = 0xFFE5;
+        $expectedCodepoints[] = 0xFFE6;
 
         return array_map(function(int $codepoint) : string {
             return eval('return "\u{' . sprintf('%04s', dechex($codepoint)) . '}";');
