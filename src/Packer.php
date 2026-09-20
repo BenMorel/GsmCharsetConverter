@@ -47,6 +47,7 @@ final class Packer
             $octet = ($septet >> (7 - $bits));
             $octet |= (($nextSeptet & self::MASK_LAST_N_BITS[8 - $bits]) << $bits);
 
+            /** @var int<0, 255> $octet */
             $result .= chr($octet);
 
             if (--$bits === 0) {
@@ -90,6 +91,7 @@ final class Packer
 
             $carry = ($octet & self::MASK_FIRST_N_BITS[8 - $bits]);
 
+            /** @var int<0, 255> $septet */
             $result .= chr($septet);
 
             if (--$bits === 0) {

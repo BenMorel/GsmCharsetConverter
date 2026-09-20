@@ -10,12 +10,12 @@ namespace BenMorel\GsmCharsetConverter;
 final class Converter
 {
     /**
-     * @var array<string, string>
+     * @var array<int|string, string>
      */
     private array $utf8ToGsm;
 
     /**
-     * @var array<string, string>
+     * @var array<int|string, string>
      */
     private array $utf8ToGsmWithTranslit;
 
@@ -183,7 +183,13 @@ final class Converter
             throw new \InvalidArgumentException('The input string is not valid UTF-8.');
         }
 
-        return preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
+        $result = preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
+
+        if ($result === false) {
+            throw new \LogicException('preg_split() failed.');
+        }
+
+        return $result;
     }
 
     /**
