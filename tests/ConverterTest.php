@@ -6,6 +6,7 @@ namespace BenMorel\GsmCharsetConverter\Tests;
 
 use BenMorel\GsmCharsetConverter\Converter;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
@@ -14,18 +15,17 @@ use function strtoupper;
 class ConverterTest extends TestCase
 {
     /**
-     * @dataProvider providerConvertGsmToUtf8
-     *
      * @param string $input  The GSM 03.38 input string.
      * @param string $output The expected UTF-8 output string.
      */
+    #[DataProvider('providerConvertGsmToUtf8')]
     public function testConvertGsmToUtf8(string $input, string $output): void
     {
         $converter = new Converter();
         self::assertSame($output, $converter->convertGsmToUtf8($input));
     }
 
-    public function providerConvertGsmToUtf8(): array
+    public static function providerConvertGsmToUtf8(): array
     {
         return [
             // empty string
@@ -60,11 +60,10 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerConvertGsmToUtf8WithInvalidString
-     *
      * @param string $string          The string to test.
      * @param string $expectedMessage The expected exception message.
      */
+    #[DataProvider('providerConvertGsmToUtf8WithInvalidString')]
     public function testConvertGsmToUtf8WithInvalidString(string $string, string $expectedMessage): void
     {
         $converter = new Converter();
@@ -75,7 +74,7 @@ class ConverterTest extends TestCase
         $converter->convertGsmToUtf8($string);
     }
 
-    public function providerConvertGsmToUtf8WithInvalidString(): array
+    public static function providerConvertGsmToUtf8WithInvalidString(): array
     {
         return [
             ["\x1B", 'contains an ESC char at the end of the string'],
@@ -91,13 +90,12 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerConvertUtf8ToGsm
-     *
      * @param string      $input        The UTF-8 input string.
      * @param bool        $translit     Whether to use transliteration.
      * @param string|null $replaceChars The optional replacement string for unknown chars.
      * @param string      $output       The expected GSM 03.38 output string.
      */
+    #[DataProvider('providerConvertUtf8ToGsm')]
     public function testConvertUtf8ToGsm(string $input, bool $translit, ?string $replaceChars, string $output): void
     {
         $converter = new Converter();
@@ -107,7 +105,7 @@ class ConverterTest extends TestCase
         self::assertSame($output, $actualOutput, $message);
     }
 
-    public function providerConvertUtf8ToGsm(): iterable
+    public static function providerConvertUtf8ToGsm(): iterable
     {
         // Fully GSM 03.38 compatible string tests;
         // Let's tests these with all parameter combinations, as the output should be the same.
@@ -200,13 +198,12 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerConvertUtf8ToGsmWithInvalidParams
-     *
      * @param string      $string          The UTF-8 input string.
      * @param bool        $translit        Whether to use transliteration.
      * @param string|null $replaceChars    The optional replacement string for unknown chars.
      * @param string      $expectedMessage The expected exception message.
      */
+    #[DataProvider('providerConvertUtf8ToGsmWithInvalidParams')]
     public function testConvertUtf8ToGsmWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage): void
     {
         $converter = new Converter();
@@ -220,13 +217,12 @@ class ConverterTest extends TestCase
     /**
      * Using the same provider as UTF-8 to GSM, the exceptions should be the same.
      *
-     * @dataProvider providerConvertUtf8ToGsmWithInvalidParams
-     *
      * @param string      $string          The UTF-8 input string.
      * @param bool        $translit        Whether to use transliteration.
      * @param string|null $replaceChars    The optional replacement string for unknown chars.
      * @param string      $expectedMessage The expected exception message.
      */
+    #[DataProvider('providerConvertUtf8ToGsmWithInvalidParams')]
     public function testCleanUpUtf8StringWithInvalidParams(string $string, bool $translit, ?string $replaceChars, string $expectedMessage): void
     {
         $converter = new Converter();
@@ -237,7 +233,7 @@ class ConverterTest extends TestCase
         $converter->cleanUpUtf8String($string, $translit, $replaceChars);
     }
 
-    public function providerConvertUtf8ToGsmWithInvalidParams(): array
+    public static function providerConvertUtf8ToGsmWithInvalidParams(): array
     {
         return [
             // Invalid input string
@@ -259,20 +255,19 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerCleanUpUtf8String
-     *
      * @param string      $input        The UTF-8 input string.
      * @param bool        $translit     Whether to use transliteration.
      * @param string|null $replaceChars The optional replacement string for unknown chars.
      * @param string      $output       The expected UTF-8 output string.
      */
+    #[DataProvider('providerCleanUpUtf8String')]
     public function testCleanUpUtf8String(string $input, bool $translit, ?string $replaceChars, string $output): void
     {
         $converter = new Converter();
         self::assertSame($output, $converter->cleanUpUtf8String($input, $translit, $replaceChars));
     }
 
-    public function providerCleanUpUtf8String(): iterable
+    public static function providerCleanUpUtf8String(): iterable
     {
         // Fully GSM 03.38 compatible string tests;
         // Let's tests these with all parameter combinations, the output should always be the same as the input.
@@ -371,18 +366,17 @@ class ConverterTest extends TestCase
     }
 
     /**
-     * @dataProvider providerIsUtf8StringGsmCompatible
-     *
      * @param string $input  The UTF-8 input string.
      * @param bool   $output The expected UTF-8 output string.
      */
+    #[DataProvider('providerIsUtf8StringGsmCompatible')]
     public function testIsUtf8StringGsmCompatible(string $input, bool $output): void
     {
         $converter = new Converter();
         self::assertSame($output, $converter->isUtf8StringGsmCompatible($input));
     }
 
-    public function providerIsUtf8StringGsmCompatible(): iterable
+    public static function providerIsUtf8StringGsmCompatible(): iterable
     {
         $tests = [
             // empty string

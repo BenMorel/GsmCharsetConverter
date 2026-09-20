@@ -6,6 +6,7 @@ namespace BenMorel\GsmCharsetConverter\Tests;
 
 use BenMorel\GsmCharsetConverter\Packer;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
@@ -15,11 +16,10 @@ use function strtoupper;
 class PackerTest extends TestCase
 {
     /**
-     * @dataProvider providerPack
-     *
      * @param string $input     The 7-bit input string.
      * @param string $outputHex The expected output string, hex-encoded.
      */
+    #[DataProvider('providerPack')]
     public function testPack(string $input, string $outputHex): void
     {
         $packer = new Packer();
@@ -29,7 +29,7 @@ class PackerTest extends TestCase
         self::assertSame(hex2bin($outputHex), $actualOutput, $message);
     }
 
-    public function providerPack(): array
+    public static function providerPack(): array
     {
         return [
             ['', ''],
@@ -88,11 +88,10 @@ class PackerTest extends TestCase
     /**
      * Re-uses the pack data provider.
      *
-     * @dataProvider providerPack
-     *
      * @param string $output   The expected 7-bit output string.
      * @param string $inputHex The input string, hex-encoded.
      */
+    #[DataProvider('providerPack')]
     public function testUnpack(string $output, string $inputHex): void
     {
         $packer = new Packer();
@@ -107,11 +106,10 @@ class PackerTest extends TestCase
      * This test showcases the ambiguity described in Packer::unpack() in some edge cases,
      * and tests that unpack() consistently resolves this ambiguity to dropping the last zero septet.
      *
-     * @dataProvider providedAmbiguousUnpack
-     *
      * @param string $string An unpacked 7-bit string.
      * @param string $packed The packed 8-bit string, with a length multiple of 8 and ending with 0x00 or 0x01.
      */
+    #[DataProvider('providedAmbiguousUnpack')]
     public function testAmbiguousUnpack(string $string, string $packed): void
     {
         $packer = new Packer();
@@ -123,7 +121,7 @@ class PackerTest extends TestCase
         self::assertSame($string, $packer->unpack($packed));
     }
 
-    public function providedAmbiguousUnpack(): array
+    public static function providedAmbiguousUnpack(): array
     {
         return [
             ["\x7F\x7F\x7F\x7F\x7F\x7F\x3F", "\xFF\xFF\xFF\xFF\xFF\xFF\x00"],
