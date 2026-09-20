@@ -172,8 +172,9 @@ class CharsetTest extends TestCase
         $expectedCodepoints[] = 0xFFE5;
         $expectedCodepoints[] = 0xFFE6;
 
-        return array_map(function(int $codepoint) : string {
-            return eval('return "\u{' . sprintf('%04s', dechex($codepoint)) . '}";');
-        }, $expectedCodepoints);
+        return array_map(
+            fn (int $codepoint): string => eval('return "\u{' . sprintf('%04s', dechex($codepoint)) . '}";'),
+            $expectedCodepoints,
+        );
     }
 }
