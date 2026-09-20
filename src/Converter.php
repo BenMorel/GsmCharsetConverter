@@ -21,7 +21,7 @@ use const PREG_SPLIT_NO_EMPTY;
 /**
  * Converts GSM 03.38 strings to and from UTF-8.
  */
-final class Converter
+final readonly class Converter
 {
     /**
      * @var array<int|string, string>
@@ -46,7 +46,7 @@ final class Converter
         );
 
         // Create the base dictionary + transliteration
-        $this->utf8ToGsmWithTranslit = $this->utf8ToGsm;
+        $utf8ToGsmWithTranslit = $this->utf8ToGsm;
 
         foreach (Charset::TRANSLITERATE as $from => $to) {
             // Transliterate character by character, as the output string may contain several chars
@@ -54,8 +54,10 @@ final class Converter
 
             $to = array_map(fn (string $char): string => $this->utf8ToGsm[$char], $to);
 
-            $this->utf8ToGsmWithTranslit[$from] = implode('', $to);
+            $utf8ToGsmWithTranslit[$from] = implode('', $to);
         }
+
+        $this->utf8ToGsmWithTranslit = $utf8ToGsmWithTranslit;
     }
 
     /**

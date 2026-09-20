@@ -10,7 +10,7 @@ use function chr;
 use function ord;
 use function strlen;
 
-final class Packer
+final readonly class Packer
 {
     /**
      * The masks to keep only the first n bits of a byte, zeroing out the other bits.

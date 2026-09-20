@@ -7,7 +7,7 @@ namespace BenMorel\GsmCharsetConverter;
 /**
  * GSM charset maps.
  */
-final class Charset
+final readonly class Charset
 {
     /**
      * Maps the GSM 03.38 default alphabet and extension table to UTF-8.
