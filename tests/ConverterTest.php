@@ -351,4 +351,96 @@ class ConverterTest extends TestCase
         yield ['À NOËL 🎁', true, '?', 'A NOEL ?'];
         yield ["à 🌲🎁 noël", true, '|', 'à || noel'];
     }
+
+    /**
+     * @dataProvider providerIsUtf8StringGsmCompatible
+     *
+     * @param string    $input           The UTF-8 input string.
+     * @param bool      $output          The expected UTF-8 output string.
+     */
+    public function testIsUtf8StringGsmCompatible(string $input, bool $output) : void
+    {
+        $converter = new Converter();
+        self::assertSame($output, $converter->isUtf8StringGsmCompatible($input));
+    }
+
+    public function providerIsUtf8StringGsmCompatible() : iterable
+    {
+        $tests = [
+            // empty string
+            '',
+
+            // main table
+            '@£$¥èéùì',
+            "òÇ\nØø\rÅå",
+            'Δ_ΦΓΛΩΠΨ',
+            "ΣΘΞÆæßÉ",
+            ' !"#¤%&\'',
+            '()*+,-./',
+            '01234567',
+            '89:;<=>?',
+            '¡ABCDEFG',
+            'HIJKLMNO',
+            'PQRSTUVW',
+            'XYZÄÖÑÜ§',
+            '¿abcdefg',
+            'hijklmno',
+            'pqrstuvw',
+            'xyzäöñüà',
+
+            // extension table
+            "\f^{}",
+            '\\[~]',
+            '|€',
+
+            // mix
+            "¡Lörèm/[ìpsüm] dòlør_sit ämét!",
+            "¿ñon s€mper {màùris} dåpibus?",
+        ];
+
+        foreach ($tests as $string) {
+            yield [$string, true];
+        }
+
+
+        $tests = [
+            // full table to single chars
+            "` ¢¦¨",
+            "ª«¬­¯",
+            "°²³´µ",
+            "¶·¸¹º",
+            "»ÀÁÂÃ",
+            "ÈÊËÌÍ",
+            "ÎÏÐÒÓ",
+            "ÔÕ×ÙÚ",
+            "ÛÝáâã",
+            "çêëíî",
+            "ïðóôõ",
+            "÷úûýÿ",
+
+            "ąĄćĆęĘłŁńŃśŚźŹżŻ",
+
+            // full table to multiple chars
+            "©®±¼",
+            "½¾Þþ",
+
+            // mix of native and transliterable
+            'À NOËL',
+            'à noël',
+        ];
+
+        foreach ($tests as $input) {
+            yield [$input, false];
+        }
+
+        // Strings with unsupported characters, replacement only.
+
+        yield ['À NOËL 🎁', false];
+        yield ["à 🌲🎁 noël", false];
+
+        // Strings with unsupported characters, transliteration and replacement.
+
+        yield ['À NOËL 🎁', false];
+        yield ["à 🌲🎁 noël", false];
+    }
 }
