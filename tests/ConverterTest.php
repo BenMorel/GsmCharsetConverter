@@ -402,9 +402,9 @@ class ConverterTest extends TestCase
             yield [$string, true];
         }
 
+        // transliterable
 
         $tests = [
-            // full table to single chars
             "` ¢¦¨",
             "ª«¬­¯",
             "°²³´µ",
@@ -420,27 +420,17 @@ class ConverterTest extends TestCase
 
             "ąĄćĆęĘłŁńŃśŚźŹżŻ",
 
-            // full table to multiple chars
             "©®±¼",
             "½¾Þþ",
 
-            // mix of native and transliterable
             'À NOËL',
             'à noël',
+
+            '🎁'
         ];
 
         foreach ($tests as $input) {
             yield [$input, false];
         }
-
-        // Strings with unsupported characters, replacement only.
-
-        yield ['À NOËL 🎁', false];
-        yield ["à 🌲🎁 noël", false];
-
-        // Strings with unsupported characters, transliteration and replacement.
-
-        yield ['À NOËL 🎁', false];
-        yield ["à 🌲🎁 noël", false];
     }
 }
