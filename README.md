@@ -27,7 +27,7 @@ composer require benmorel/gsm-charset-converter
 
 ## Requirements
 
-This library requires PHP >= 7.4, and the `mbstring` extension.
+This library requires PHP >= 8.2, and the `mbstring` extension.
 
 ## Project status & release process
 
