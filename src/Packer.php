@@ -40,14 +40,15 @@ final readonly class Packer
         for ($i = 0; $i < $length; $i++) {
             $septet = ord($string[$i]);
 
-            if (($septet & 0x80) !== 0) {
-                throw new InvalidArgumentException('Input must not contain 8-bit chars.');
-            }
-
             if ($i + 1 === $length) {
                 $nextSeptet = 0;
             } else {
                 $nextSeptet = ord($string[$i + 1]);
+            }
+
+            // The next septet must be checked as well, as every 8th septet is only ever read as a next septet.
+            if ((($septet | $nextSeptet) & 0x80) !== 0) {
+                throw new InvalidArgumentException('Input must not contain 8-bit chars.');
             }
 
             $octet = ($septet >> (7 - $bits));

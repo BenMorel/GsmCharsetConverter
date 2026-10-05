@@ -12,7 +12,10 @@ use PHPUnit\Framework\TestCase;
 
 use function bin2hex;
 use function hex2bin;
+use function strlen;
 use function strtoupper;
+use function substr;
+use function substr_replace;
 
 class PackerTest extends TestCase
 {
@@ -78,12 +81,34 @@ class PackerTest extends TestCase
         ];
     }
 
-    public function testPack8bitData(): void
+    /**
+     * @param string $string A string containing an 8-bit char.
+     */
+    #[DataProvider('providerPack8bitData')]
+    public function testPack8bitData(string $string): void
     {
         $packer = new Packer();
 
         $this->expectException(InvalidArgumentException::class);
-        $packer->pack("\xAA");
+        $this->expectExceptionMessage('Input must not contain 8-bit chars.');
+
+        $packer->pack($string);
+    }
+
+    public static function providerPack8bitData(): Generator
+    {
+        yield ["\xAA"];
+
+        $string = 'ABCDEFGHIJKLMNOPQ';
+        $length = strlen($string);
+
+        for ($position = 0; $position < $length; $position++) {
+            // 8-bit char in the middle of the string
+            yield [substr_replace($string, "\x80", $position, 1)];
+
+            // 8-bit char at the end of the string
+            yield [substr($string, 0, $position) . "\xFF"];
+        }
     }
 
     /**
