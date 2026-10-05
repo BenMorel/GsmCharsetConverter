@@ -15,7 +15,7 @@ The library offers optional transliteration: unsupported characters can be repla
 Known limitations:
 
 - Only the default alphabet and extension table are supported at the moment; this is the alphabet that must be supported by every device and network element according to the standard. [Other alphabets exist](https://en.wikipedia.org/wiki/GSM_03.38#National_language_shift_tables) but this project does not currently aim to support them.
-- Transliteration may not be available for all characters that could have a close equivalent in the GSM charset; this library supports transliteration of LATIN1 chars, currency signs, and several other languages. If you feel like another UTF-8 character could be transliterated, please [open an issue](https://github.com/BenMorel/GsmCharsetConverter/issues)!
+- Transliteration may not be available for all characters that could have a close equivalent in the GSM charset; this library supports transliteration of LATIN1 chars, currency signs, and several languages. If you feel like another UTF-8 character could be transliterated, please [open an issue](https://github.com/BenMorel/GsmCharsetConverter/issues)!
 
 ## Installation
 
@@ -45,6 +45,40 @@ for a list of changes introduced by each further `0.x.0` version.
 
 ## Usage
 
+### Converting UTF-8 strings to GSM 03.38
+
+The `convertUtf8ToGsm()` method accepts 3 parameters:
+
+| Parameter       | Type      | Description                                                                                                                 |
+|-----------------|-----------|-----------------------------------------------------------------------------------------------------------------------------|
+| `$string`       | `string`  | A valid UTF-8 input string.                                                                                                 |
+| `$translit`     | `bool`    | Whether to attempt to transliterate incompatible chars.                                                                     |
+| `$replaceChars` | `?string` | An optional UTF-8 string to replace unknown characters with; it must only contain GSM-compatible chars. Defaults to `null`. |
+
+```php
+use BenMorel\GsmCharsetConverter\Converter;
+
+$converter = new Converter();
+echo $converter->convertUtf8ToGsm('Olá', false, '?'); // Ol?
+echo $converter->convertUtf8ToGsm('Olá', true); // Ola
+```
+
+The output is an **unpacked** GSM 03.38 string. Note that for simple strings there is a strong overlap with ASCII, but the output is not ASCII: some chars are encoded differently, and chars from the extension table take two bytes:
+
+```php
+$converter->convertUtf8ToGsm('@', false); // "\x00"
+$converter->convertUtf8ToGsm('€', false); // "\x1B\x65"
+```
+
+> [!NOTE]
+> When transliterating, a single char may be converted to several: `…` becomes `...` and `₩` becomes `KRW`, so the output can be longer than the input.
+
+An `InvalidArgumentException` is thrown if:
+
+- the input string is not valid UTF-8;
+- the replacement string is not valid UTF-8, or contains chars that cannot be converted to the GSM charset as is, without transliteration;
+- the input string contains a char that cannot be converted (or transliterated, if enabled), and no replacement string has been provided.
+
 ### Converting GSM 03.38 strings to UTF-8
 
 The `convertGsmToUtf8()` method takes one parameter:
@@ -53,41 +87,13 @@ The `convertGsmToUtf8()` method takes one parameter:
 use BenMorel\GsmCharsetConverter\Converter;
 
 $converter = new Converter();
-$utf8 = $converter->convertGsmToUtf8('...');
+echo $converter->convertGsmToUtf8("d\x05j\x7F"); // déjà
 ```
 
 The input string must be a valid GSM 03.38 string, or an `InvalidArgumentException` is thrown.
 **The input string is expected to be unpacked**: 7-bit chars in 8-bit bytes with a leading zero bit, just like ASCII chars.
 
-### Converting UTF-8 strings to GSM 03.38
-
-The `convertUtf8ToGsm()` method accepts 3 parameters:
-
-- a valid UTF-8 input string;
-- whether or not to attempt to transliterate incompatible chars;
-- an optional string to replace unknown characters with.
-
-If the input string is not valid UTF-8, an `InvalidArgumentException` is thrown.
-
-The output is an unpacked GSM 03.38 string.
-
-#### Without transliteration
-
-```php
-$gsm = $converter->convertUtf8ToGsm('Helló', false, '?'); // Hell?
-```
-
-If the third parameter is not provided, and the string contains characters incompatible with GSM 03.38, an `InvalidArgumentException` is thrown.
-
-#### With transliteration
-
-```php
-$gsm = $converter->convertUtf8ToGsm('Helló', true, '?'); // Hello
-```
-
-If the third parameter is not provided, and the string contains characters incompatible with GSM 03.38 and not transliterable, an `InvalidArgumentException` is thrown.
-
-### Cleaning up UTF-8 strings to ensure that a message is sent in the GSM charset
+### Cleaning up a UTF-8 string to ensure that a message is sent in the GSM charset
 
 Nowadays, most online SMS gateways accept UTF-8 as input; however, some of them do not provide a way to force a message to be sent in the GSM charset.
 
@@ -98,9 +104,26 @@ The library provides a method, `cleanUpUtf8String()`, that prevents these bad su
 This method accepts the same parameters as `convertUtf8ToGsm()`:
 
 ```php
-$utf8 = $converter->cleanUpUtf8String('Helló', false, '?'); // Hell?
-$utf8 = $converter->cleanUpUtf8String('Helló', true, '?'); // Hello
+$utf8 = $converter->cleanUpUtf8String('Olá', false, '?'); // Ol?
+$utf8 = $converter->cleanUpUtf8String('Olá', true, '?'); // Ola
 ```
+
+> [!NOTE]
+> When transliterating, a single char may be converted to several: `…` becomes `...` and `₩` becomes `KRW`, so the output can be longer than the input.
+
+### Checking if a UTF-8 string is compatible with the GSM charset
+
+The `isUtf8StringGsmCompatible()` method checks whether a UTF-8 string contains only characters that can be converted to the GSM charset as is, without transliteration or replacement:
+
+```php
+use BenMorel\GsmCharsetConverter\Converter;
+
+$converter = new Converter();
+$converter->isUtf8StringGsmCompatible('Voilà'); // true
+$converter->isUtf8StringGsmCompatible('Olá'); // false
+```
+
+If the input string is not valid UTF-8, an `InvalidArgumentException` is thrown.
 
 ### Packing 7-bit strings into 8-bit binary strings
 
@@ -116,4 +139,3 @@ $string = $packer->unpack("\x41\xE1\x10"); // ABC
 ```
 
 Note that `pack()` throws an `InvalidArgumentException` if the input string contains 8-bit chars (i.e. chars with the leading bit set).
-
