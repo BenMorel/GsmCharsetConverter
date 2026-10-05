@@ -73,7 +73,7 @@ final readonly class Packer
      * is zero (i.e. when the last octet is 0x00 or 0x01). For example, both 0x7F7F7F7F7F7F7F and 0x7F7F7F7F7F7F7F00
      * pack to 0xFFFFFFFFFFFF01, so without context, we cannot know while unpacking if there is a trailing zero septet,
      * or if the zeros are just padding. This method always resolves to dropping the last zero in this special case:
-     * 0xFFFFFFFFFFFF01 will unpack to F7F7F7F7F7F7F.
+     * 0xFFFFFFFFFFFF01 will unpack to 0x7F7F7F7F7F7F7F.
      */
     public function unpack(string $string): string
     {
