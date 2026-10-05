@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BenMorel\GsmCharsetConverter\Tests;
 
 use BenMorel\GsmCharsetConverter\Packer;
+use Generator;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -100,6 +101,51 @@ class PackerTest extends TestCase
         $message = bin2hex($actualOutput) . ' != ' . bin2hex($output);
 
         self::assertSame($output, $actualOutput, $message);
+    }
+
+    /**
+     * Tests that unpack() restores the string given to pack(), in particular when it contains zero septets
+     * (the @ char in the GSM charset) that are not at the end of the string.
+     *
+     * @param string $string An unpacked 7-bit string.
+     */
+    #[DataProvider('providerPackUnpackRoundTrip')]
+    public function testPackUnpackRoundTrip(string $string): void
+    {
+        $packer = new Packer();
+        $actualOutput = $packer->unpack($packer->pack($string));
+
+        $message = bin2hex($actualOutput) . ' != ' . bin2hex($string);
+
+        self::assertSame($string, $actualOutput, $message);
+    }
+
+    public static function providerPackUnpackRoundTrip(): Generator
+    {
+        foreach (self::providerPack() as [$input]) {
+            yield [$input];
+        }
+
+        yield from [
+            // zero septet in 8th position
+            ["contact\x00example.com"],
+            ["ABCDEFG\x00I"],
+
+            // zero septet in 16th position
+            ["ABCDEFGHIJKLMNO\x00Q"],
+
+            // zero septets in 8th and 16th positions
+            ["ABCDEFG\x00IJKLMNO\x00Q"],
+
+            // zero septets only
+            ["\x00\x00\x00\x00\x00\x00\x00\x00\x00"],
+
+            // zero septets in other positions
+            ["\x00"],
+            ["\x00BCD"],
+            ["ABC\x00"],
+            ["john.doe\x00example.com"],
+        ];
     }
 
     /**

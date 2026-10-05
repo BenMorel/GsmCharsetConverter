@@ -103,7 +103,8 @@ final readonly class Packer
             if (--$bits === 0) {
                 $bits = 7;
 
-                if ($carry !== 0) {
+                // A zero septet is only dropped at the end of the string, where it cannot be told apart from padding.
+                if ($carry !== 0 || $i + 1 !== $length) {
                     $result .= chr($carry >> 1);
                 }
             }
